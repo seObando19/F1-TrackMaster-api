@@ -1,4 +1,8 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
+import { Pilot } from 'src/schemas/pilot.schema';
+import { CreatePilotDto, GetPilotDto } from './dto/pilot.dto';
+import { Model } from 'mongoose';
 
 @Injectable()
 export class PilotService {
@@ -17,22 +21,21 @@ export class PilotService {
     },
   ];
 
-  testConexion(): string {
-    return 'Routes pilots';
+  constructor(@InjectModel(Pilot.name) private pilotModel: Model<Pilot>) {}
+
+  getPilots(): Promise<GetPilotDto[]> {
+    return this.pilotModel.find();
   }
 
-  getPilots() {
-    return this.pilots;
-  }
-
-  getPilotId(id: string) {
-    const pilot = this.pilots.find((p) => p.id === id);
+  getPilotId(id: string): Promise<GetPilotDto> {
+    const pilot = this.pilotModel.findById(id);
     if (!pilot) throw new NotFoundException('Resource no found');
     return pilot;
   }
 
-  createPilot(pilot) {
-    this.pilots.push(pilot);
+  async createPilot(createPilot: CreatePilotDto): Promise<Pilot> {
+    const createdPilot = new this.pilotModel(createPilot);
+    return createdPilot.save();
   }
 
   updatePilot(id: string, pilot) {

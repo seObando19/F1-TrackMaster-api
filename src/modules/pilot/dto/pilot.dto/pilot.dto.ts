@@ -12,7 +12,26 @@ export class PilotDto {
 
   @IsDate()
   birthday;
+}
 
-  @IsOptional()
-  team_id;
+export class CreatePilotDto {
+  @IsString()
+  name;
+
+  @IsString()
+  lastname;
+
+  @IsArray()
+  nickname;
+
+  @IsDate()
+  birthday;
+}
+
+export class GetPilotDto {
+  @IsString()
+  name;
+
+  @IsString()
+  lastname;
 }

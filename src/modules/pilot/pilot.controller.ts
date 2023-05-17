@@ -8,29 +8,25 @@ import {
   Post,
 } from '@nestjs/common';
 import { PilotService } from './pilot.service';
+import { CreatePilotDto, GetPilotDto } from './dto/pilot.dto';
 
 @Controller('pilot')
 export class PilotController {
   constructor(private pilotService: PilotService) {}
 
-  @Get('conexion')
-  testConex(): string {
-    return this.pilotService.testConexion();
-  }
-
   @Get()
-  getPilots() {
+  getPilots(): Promise<GetPilotDto[]> {
     return this.pilotService.getPilots();
   }
 
   @Get(':id')
-  getPilotId(@Param('id') id: string) {
+  getPilotId(@Param('id') id: string): Promise<GetPilotDto> {
     return this.pilotService.getPilotId(id);
   }
 
   @Post()
-  createPilot(@Body() pilot: any) {
-    this.pilotService.createPilot(pilot);
+  createPilot(@Body() pilot: CreatePilotDto) {
+    return this.pilotService.createPilot(pilot);
   }
 
   @Patch(':id')

@@ -1,1 +1,1 @@
-export { PilotDto } from './pilot.dto';
+export { PilotDto, CreatePilotDto, GetPilotDto } from './pilot.dto';
