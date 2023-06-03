@@ -8,7 +8,7 @@ import {
   Post,
 } from '@nestjs/common';
 import { PilotService } from './pilot.service';
-import { CreatePilotDto, GetPilotDto } from './dto/pilot.dto';
+import { CreatePilotDto, GetPilotDto } from '../dto/pilot.dto';
 
 @Controller('pilot')
 export class PilotController {
@@ -35,7 +35,7 @@ export class PilotController {
   }
 
   @Delete(':id')
-  deletePilot(@Param('id') id: string) {
+  deletePilot(@Param('id') id: string): Promise<void> {
     return this.pilotService.deletePilot(id);
   }
 }

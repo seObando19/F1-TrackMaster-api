@@ -1,53 +1,40 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Pilot } from 'src/schemas/pilot.schema';
-import { CreatePilotDto, GetPilotDto } from './dto/pilot.dto';
+import { CreatePilotDto, GetPilotDto } from '../dto/pilot.dto';
 import { Model } from 'mongoose';
+import { pilotStatus } from 'src/interfaces/pilot';
 
 @Injectable()
 export class PilotService {
-  pilots = [
-    {
-      id: '1',
-      name: 'Lewis Hamilton',
-    },
-    {
-      id: '2',
-      name: 'Charles Lecler',
-    },
-    {
-      id: '3',
-      name: 'Max Vertappen',
-    },
-  ];
 
   constructor(@InjectModel(Pilot.name) private pilotModel: Model<Pilot>) {}
 
-  getPilots(): Promise<GetPilotDto[]> {
-    return this.pilotModel.find();
+  async getPilots(): Promise<GetPilotDto[]> {
+    return await this.pilotModel.find();
   }
 
-  getPilotId(id: string): Promise<GetPilotDto> {
-    const pilot = this.pilotModel.findById(id);
+  async getPilotId(id: string): Promise<GetPilotDto> {
+    const pilot = await this.pilotModel.findById(id);
     if (!pilot) throw new NotFoundException('Resource no found');
     return pilot;
   }
 
-  async createPilot(createPilot: CreatePilotDto): Promise<Pilot> {
-    const createdPilot = new this.pilotModel(createPilot);
+  async createPilot(payload: CreatePilotDto): Promise<Pilot> {
+    const createdPilot = new this.pilotModel(payload);
     return createdPilot.save();
   }
 
-  updatePilot(id: string, pilot) {
-    const getPilot = this.pilots.find((p) => p.id === id);
-    if (!getPilot) throw new NotFoundException('Resource no found');
-    getPilot.name = pilot.name;
-    return getPilot;
+  async updatePilot(id: string, payload: any) {
+    if (!id && !payload) throw new NotFoundException('Resource no found');
+    const pilotUpdated = await this.pilotModel.findByIdAndUpdate(id, payload);
+    return pilotUpdated;
   }
 
-  deletePilot(id: string) {
-    const getPilot = this.pilots.findIndex((p) => p.id === id);
-    if (!getPilot) throw new NotFoundException('Resource no found');
-    this.pilots.splice(getPilot, 1);
+  async deletePilot(id: string): Promise<void> {
+    const pilot = await this.pilotModel.findById(id);
+    if (!pilot) throw new NotFoundException('Resource no found');
+    pilot.status = pilotStatus.deleted;
+    pilot.save();
   }
 }

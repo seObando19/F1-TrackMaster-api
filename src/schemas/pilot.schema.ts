@@ -1,5 +1,7 @@
 import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
-import { HydratedDocument } from 'mongoose';
+import mongoose, { HydratedDocument } from 'mongoose';
+import { pilotStatus, titlePilot } from '../interfaces/pilot';
+import { Team } from './team.schema';
 
 export type PilotDocument = HydratedDocument<Pilot>;
 
@@ -16,6 +18,15 @@ export class Pilot {
 
   @Prop()
   nationality: string;
+
+  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: Team.name })
+  currentTeam: Team;
+
+  @Prop({ default: pilotStatus.active, required: false })
+  status: pilotStatus;
+
+  @Prop()
+  title?: titlePilot;
 
   @Prop()
   birthday: Date;
