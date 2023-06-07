@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Pilot } from 'src/schemas/pilot.schema';
-import { CreatePilotDto, GetPilotDto } from '../dto/pilot.dto';
+import { CreatePilotDto, GetPilotDto } from '../dto/pilot';
 import { Model } from 'mongoose';
 import { pilotStatus } from 'src/interfaces/pilot';
 

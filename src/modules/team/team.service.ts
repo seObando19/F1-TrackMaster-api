@@ -3,7 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Team, TeamDocument } from 'src/schemas/team.schema';
 import { CreateTeamDto, statusTeams } from '../dto/team';
-import { TeamDTO } from '../dto/team/team.dto';
+import { TeamDTO, UpdateTeamDTO } from '../dto/team/team.dto';
 
 @Injectable()
 export class TeamService {
@@ -27,10 +27,10 @@ export class TeamService {
     return createTeam.save();
   }
 
-  async updateTeam(id: string, payload: any) {
+  async updateTeam(id: string, payload: UpdateTeamDTO): Promise<TeamDTO> {
     if(!id || !payload) throw new NotFoundException('Resource no found');
     const teamUpdated = await this.teamModel.findByIdAndUpdate(id, payload);
-    return teamUpdated;
+    return this.mapperTeam(teamUpdated);
   }
 
   async deleteTeam(id: string) {

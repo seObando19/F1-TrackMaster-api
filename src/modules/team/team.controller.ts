@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Get, NotFoundException, Param, Patch, Post } from '@nestjs/common';
 import { TeamService } from './team.service';
 import { CreateTeamDto } from '../dto/team';
-import { TeamDTO } from '../dto/team/team.dto';
+import { TeamDTO, UpdateTeamDTO } from '../dto/team/team.dto';
 
 @Controller('team')
 export class TeamController {
@@ -24,7 +24,7 @@ export class TeamController {
   }
 
   @Patch(':id')
-  updateTeam(@Param('id') id: string, @Body() payload: any)  {
+  updateTeam(@Param('id') id: string, @Body() payload: UpdateTeamDTO): Promise<TeamDTO>  {
     return this.teamService.updateTeam(id, payload);
   }
 

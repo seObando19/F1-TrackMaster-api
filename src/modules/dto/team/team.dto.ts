@@ -33,3 +33,14 @@ export class CreateTeamDto {
   @IsDateString()
   startYear;
 }
+
+export class UpdateTeamDTO {
+  @IsString()
+  name;
+
+  @IsString()
+  headquarters;
+
+  @IsString()
+  countryOrigin;
+}

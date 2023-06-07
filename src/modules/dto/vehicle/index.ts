@@ -1,0 +1,1 @@
+export { CreateVehicleDTO, vehicleDTO } from './vehicle.dto'
