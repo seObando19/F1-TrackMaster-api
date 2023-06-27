@@ -1,12 +1,13 @@
 import { IsArray, IsDate, IsDateString, IsMongoId, IsObject, IsOptional, IsString } from 'class-validator';
 import { pilotStatus, titlePilot } from 'src/interfaces/pilot';
+import { Team } from 'src/schemas/team.schema';
 
 export class PilotDTO {
   name: string;
   lastname: string;
   nickname: string[];
   nationality: string;
-  currentTeam: string;
+  currentTeam: Team;
   status: pilotStatus;
   title?: titlePilot;
   birthday: Date;
