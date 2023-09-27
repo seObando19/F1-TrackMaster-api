@@ -10,13 +10,12 @@ export class TeamService {
 
   constructor(@InjectModel(Team.name) private teamModel: Model<Team>) {}
 
-  async getTeams() {
+  async getTeams():Promise<TeamDTO[]> {
     const teams = await this.teamModel.find();
-    const rtaMapper = teams.map( t => this.mapperTeam(t));
-    return rtaMapper;
+    return this.mapperTeam(teams);
   }
 
-  async getTeamById(id: string) {
+  async getTeamById(id: string):Promise<TeamDTO[]> {
     const team = await this.teamModel.findById(id);
     if(!team) throw new NotFoundException('Resource no found');
     return this.mapperTeam(team);
@@ -24,7 +23,7 @@ export class TeamService {
 
   async createTeam(payload: CreateTeamDto): Promise<CreateTeamDto> {
     const createTeam = new this.teamModel(payload);
-    return createTeam.save();
+    return await createTeam.save();
   }
 
   async updateTeam(id: string, payload: UpdateTeamDTO): Promise<TeamDTO> {
@@ -40,16 +39,18 @@ export class TeamService {
     team.save();
   }
 
-  mapperTeam(team) {
-    const teamRta: TeamDTO = {
-      id: team.id,
-      name: team.name,
-      headquarters: team.headquarters,
-      countryOrigin: team.countryOrigin,
-      status: team.status,
+  mapperTeam(obj:any) {
+    let teams: any;
+    if(!obj || obj === undefined || obj === null) throw new NotFoundException('Resourse no found');
+    teams = obj.map((team) => {
+      id: team.id;
+      name: team.name;
+      headquarters: team.headquarters;
+      countryOrigin: team.countryOrigin;
+      status: team.status;
       startYear: team.startYear
-    }
-    return teamRta;
+    });
+    return teams;
   }
 
 }

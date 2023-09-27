@@ -3,7 +3,7 @@ import { TeamService } from './team.service';
 import { CreateTeamDto } from '../dto/team';
 import { TeamDTO, UpdateTeamDTO } from '../dto/team/team.dto';
 
-@Controller('team')
+@Controller('api/v1/team')
 export class TeamController {
   constructor( private teamService: TeamService ) {}
 
@@ -13,7 +13,7 @@ export class TeamController {
   }
 
   @Get(':id')
-  getTeamById(@Param('id') id: string): Promise<TeamDTO> {
+  getTeamById(@Param('id') id: string): Promise<TeamDTO[]> {
     if(!id) throw new NotFoundException('Resource no found');
     return this.teamService.getTeamById(id);
   }
