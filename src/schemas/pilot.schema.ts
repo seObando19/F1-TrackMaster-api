@@ -17,6 +17,9 @@ export class Pilot {
   nickname?: string[];
 
   @Prop()
+  age: number;
+
+  @Prop()
   nationality: string;
 
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: Team.name })
@@ -27,9 +30,6 @@ export class Pilot {
 
   @Prop()
   title?: titlePilot;
-
-  @Prop()
-  birthday: Date;
 
   @Prop()
   createdAt?: Date;

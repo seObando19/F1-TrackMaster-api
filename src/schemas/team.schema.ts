@@ -7,6 +7,9 @@ export type TeamDocument = HydratedDocument<Team>
 @Schema({ timestamps: true })
 export class Team {
   @Prop()
+  id: string;
+
+  @Prop()
   name: string;
 
   @Prop()
