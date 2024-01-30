@@ -3,7 +3,7 @@ import { GrandPrixService } from './grand-prix.service';
 import { GrandPrixDTO, createGrandPrix } from '../dto/grand-prix';
 
 
-@Controller('grand-prix')
+@Controller('api/v1/grand-prix')
 export class GrandPrixController {
 
   constructor( private grandPrixService: GrandPrixService) {}

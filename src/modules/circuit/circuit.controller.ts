@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Get, NotFoundException, Param, Post, Put } from '@nestjs/common';
 import { CircuitService } from './circuit.service';
 
-@Controller('circuit')
+@Controller('api/v1/circuit')
 export class CircuitController {
 
   constructor(private circuitService: CircuitService){}

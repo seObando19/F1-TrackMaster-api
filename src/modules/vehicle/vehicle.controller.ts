@@ -3,7 +3,7 @@ import { CreateVehicleDTO } from '../dto/vehicle';
 import { VehicleService } from './vehicle.service';
 
 
-@Controller('vehicle')
+@Controller('api/v1/ehicle')
 export class VehicleController {
 
   constructor(private vehicleService: VehicleService){}

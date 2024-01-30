@@ -12,24 +12,25 @@ export class TeamService {
 
   async getTeams():Promise<TeamDTO[]> {
     const teams = await this.teamModel.find();
-    return this.mapperTeam(teams);
+    return teams;
   }
 
-  async getTeamById(id: string):Promise<TeamDTO[]> {
+  async getTeamById(id: string):Promise<Team> {
     const team = await this.teamModel.findById(id);
     if(!team) throw new NotFoundException('Resource no found');
-    return this.mapperTeam(team);
+    return team;
   }
 
-  async createTeam(payload: CreateTeamDto): Promise<CreateTeamDto> {
+  async createTeam(payload: CreateTeamDto): Promise<Team> {
     const createTeam = new this.teamModel(payload);
     return await createTeam.save();
   }
 
-  async updateTeam(id: string, payload: UpdateTeamDTO): Promise<TeamDTO> {
+  async updateTeam(id: string, payload: UpdateTeamDTO): Promise<Team> {
     if(!id || !payload) throw new NotFoundException('Resource no found');
     const teamUpdated = await this.teamModel.findByIdAndUpdate(id, payload);
-    return this.mapperTeam(teamUpdated);
+    const teamRegister = this.getTeamById(id);
+    return teamRegister;
   }
 
   async deleteTeam(id: string) {
@@ -38,19 +39,4 @@ export class TeamService {
     team.status = statusTeams.deleted;
     team.save();
   }
-
-  mapperTeam(obj:any) {
-    let teams: any;
-    if(!obj || obj === undefined || obj === null) throw new NotFoundException('Resourse no found');
-    teams = obj.map((team) => {
-      id: team.id;
-      name: team.name;
-      headquarters: team.headquarters;
-      countryOrigin: team.countryOrigin;
-      status: team.status;
-      startYear: team.startYear
-    });
-    return teams;
-  }
-
 }
