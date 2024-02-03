@@ -3,22 +3,23 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { PilotModule } from './modules/pilot/pilot.module';
 import { TeamModule } from "./modules/team/team.module";
-import { VehicleModule } from './modules/vehicle/vehicle.module';
 import { GrandPrixModule } from './modules/grand-prix/grand-prix.module';
-import { CircuitModule } from './modules/circuit/circuit.module';
 
 import { DatabaseModule } from './database/database.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { CarModule } from './modules/car/car.module';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({ isGlobal: true }),
+    ConfigModule.forRoot({
+      envFilePath: '../.env',
+      isGlobal: true
+    }),
     DatabaseModule,
     PilotModule,
     TeamModule,
-    VehicleModule,
     GrandPrixModule,
-    CircuitModule,
+    CarModule,
   ],
   controllers: [AppController],
   providers: [AppService],

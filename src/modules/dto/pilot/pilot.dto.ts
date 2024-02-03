@@ -1,8 +1,9 @@
 import { IsArray, IsDate, IsDateString, IsMongoId, IsNumber, IsObject, IsOptional, IsString } from 'class-validator';
-import { pilotStatus, titlePilot } from 'src/interfaces/pilot';
+import { status, StatisticPilot  } from "../../pilot/interfaces/pilot/pilot.interface";
 import { Team } from 'src/schemas/team.schema';
 
 export class PilotDTO {
+
   @IsString()
   name: string;
 
@@ -10,26 +11,38 @@ export class PilotDTO {
   lastname: string;
 
   @IsArray()
+  @IsOptional()
   nickname: string[];
+
+  @IsString()
+  @IsDateString()
+  birthday: string;
+
+  @IsMongoId()
+  @IsOptional()
+  teamCurrent_id: Team;
+
+  @IsString()
+  @IsArray()
+  @IsOptional()
+  teamHistory: string[]
 
   @IsString()
   nationality: string;
 
-  @IsNumber()
-  age: number;
-
-  @IsMongoId()
-  currentTeam: Team;
-
   @IsString()
-  status: pilotStatus;
+  numberUse: string;
 
   @IsObject()
   @IsOptional()
-  title?: titlePilot;
+  statisticPilot: StatisticPilot;
+
+  @IsString()
+  status: status;
+
 }
 
-export class CreatePilotDto {
+/* export class CreatePilotDto {
   @IsString()
   name;
 
@@ -77,4 +90,4 @@ export class updatePilot {
   @IsObject()
   @IsOptional()
   title?;
-}
+} */

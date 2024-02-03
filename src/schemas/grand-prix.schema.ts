@@ -1,31 +1,33 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
-import mongoose, { HydratedDocument, Types } from "mongoose";
-import { Circuit } from "./circuit.schema";
+import mongoose, { HydratedDocument } from "mongoose";
+import { Team } from "./team.schema";
+import { Pilot } from "./pilot.schema";
+import { Circuit, Status } from "../modules/grand-prix/interfaces/grand-prix/grand-prix.interface";
 
 export type GrandPrixDocument = HydratedDocument<GrandPrix>
 
-@Schema({ timestamps: true })
+@Schema()
 export class GrandPrix {
   @Prop()
   name: string;
 
   @Prop()
-  country: string;
-
-  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: Circuit.name })
-  circuit_id: Circuit;
+  firstEdtion: string;
 
   @Prop()
-  yearsSeason: number[];
+  headquarters: string;
 
-  @Prop()
-  yearStart: Date;
+  @Prop({ type: mongoose.Types.ObjectId, ref: Team.name })
+  greaterWinnerConstructions: Team;
 
-  @Prop()
-  createdAt?: Date;
+  @Prop({ type: mongoose.Types.ObjectId, ref: Pilot.name })
+  greaterWinnerPilots: Pilot;
 
-  @Prop()
-  updatedAt?: Date;
+  @Prop({ type: Object })
+  circuit: Circuit
+
+  @Prop({ default: Status.active })
+  status: Status
 }
 
 export const GrandPrixSchema = SchemaFactory.createForClass(GrandPrix);

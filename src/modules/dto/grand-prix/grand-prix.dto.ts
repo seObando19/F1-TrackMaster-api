@@ -1,16 +1,32 @@
-import { IsArray, IsDateString, IsMongoId, IsNumber, IsString } from "class-validator";
-import { Circuit } from "src/schemas/circuit.schema";
+import { IsMongoId, IsObject, IsString } from "class-validator";
+import { Status, Circuit } from "../../grand-prix/interfaces/grand-prix/grand-prix.interface";
 
 
 export class GrandPrixDTO {
+
+  @IsString()
   name: string;
-  country: string;
-  circuit_id: Circuit;
-  yearsSeason: number[];
-  yearStart: Date;
+
+  @IsString()
+  firstEdtion: string;
+
+  @IsString()
+  headquarters: string;
+
+  @IsMongoId()
+  greaterWinnerConstructions: string;
+
+  @IsMongoId()
+  greaterWinnerPilots: string;
+
+  @IsObject()
+  circuit: Circuit;
+
+  @IsString()
+  status: Status;
 }
 
-export class createGrandPrix {
+/* export class createGrandPrix {
   @IsString()
   name;
 
@@ -26,4 +42,4 @@ export class createGrandPrix {
 
   @IsDateString()
   yearStart;
-}
+} */

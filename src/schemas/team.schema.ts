@@ -1,13 +1,11 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument } from 'mongoose';
-import { statusTeams } from 'src/modules/dto/team';
+import { status, StatisticTeam } from "../modules/team/interfaces/team/team.interface";
 
 export type TeamDocument = HydratedDocument<Team>
 
-@Schema({ timestamps: true })
+@Schema()
 export class Team {
-  @Prop()
-  id: string;
 
   @Prop()
   name: string;
@@ -16,19 +14,19 @@ export class Team {
   headquarters: string;
 
   @Prop()
-  countryOrigin: string;
-
-  @Prop({ default: statusTeams.active })
-  status: statusTeams;
-
-  @Prop()
   startYear: Date;
 
   @Prop()
-  createdAt?: Date;
+  debut: Date;
 
   @Prop()
-  updatedAt?: Date;
+  pilots: string[]
+
+  @Prop({ type:Object })
+  statisticTeam: StatisticTeam
+
+  @Prop({ default: status.active })
+  status: status;
 }
 
 export const TeamSchema = SchemaFactory.createForClass(Team);
