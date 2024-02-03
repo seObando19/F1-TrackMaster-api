@@ -1,11 +1,11 @@
 import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
-import mongoose, { HydratedDocument } from 'mongoose';
-import { pilotStatus, titlePilot } from '../interfaces/pilot';
+import mongoose, { HydratedDocument, Mongoose } from 'mongoose';
+import { status, StatisticPilot } from "../modules/pilot/interfaces/pilot/pilot.interface";
 import { Team } from './team.schema';
 
 export type PilotDocument = HydratedDocument<Pilot>;
 
-@Schema({ timestamps: true })
+@Schema()
 export class Pilot {
   @Prop()
   name: string;
@@ -17,25 +17,25 @@ export class Pilot {
   nickname?: string[];
 
   @Prop()
-  age: number;
+  birthday: Date;
+
+  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: Team.name })
+  teamCurrent_id?: Team;
+
+  @Prop()
+  teamHistory: string[]
 
   @Prop()
   nationality: string;
 
-  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: Team.name })
-  currentTeam: Team;
+  @Prop({ unique: true })
+  numberUse: number;
 
-  @Prop({ default: pilotStatus.active, required: false })
-  status: pilotStatus;
+  @Prop({ type: Object})
+  statisticPilot: StatisticPilot;
 
-  @Prop()
-  title?: titlePilot;
-
-  @Prop()
-  createdAt?: Date;
-
-  @Prop()
-  updatedAt?: Date;
+  @Prop({ default: status.active, required: false })
+  status: status;
 }
 
 export const PilotSchema = SchemaFactory.createForClass(Pilot);
