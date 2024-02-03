@@ -1,10 +1,14 @@
 import { Body, Controller, Delete, Get, NotFoundException, Param, Patch, Post } from '@nestjs/common';
 import { TeamService } from './team.service';
-import { CreateTeamDto } from '../dto/team';
-import { TeamDTO, UpdateTeamDTO } from '../dto/team/team.dto';
+// TODO implementar DTO -- import { CreateTeamDto } from '../dto/team';
+// TODO implementar DTO -- import { TeamDTO, UpdateTeamDTO } from '../dto/team/team.dto';
 import { Team } from 'src/schemas/team.schema';
+import * as dotenv from "dotenv";
 
-@Controller('api/v1/team')
+dotenv.config();
+const ENVIROMENT_DATA = process.env;
+
+@Controller(`api/${ENVIROMENT_DATA.API_VERSION}/teams`)
 export class TeamController {
   constructor( private teamService: TeamService ) {}
 
@@ -20,12 +24,12 @@ export class TeamController {
   }
 
   @Post()
-  createTeam(@Body() payload: CreateTeamDto): Promise<Team> {
+  createTeam(@Body() payload: any): Promise<Team> {
     return this.teamService.createTeam(payload);
   }
 
   @Patch(':id')
-  updateTeam(@Param('id') id: string, @Body() payload: UpdateTeamDTO): Promise<Team>  {
+  updateTeam(@Param('id') id: string, @Body() payload: any): Promise<Team>  {
     return this.teamService.updateTeam(id, payload);
   }
 

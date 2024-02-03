@@ -1,22 +1,30 @@
-import { IsDateString, IsOptional, IsString } from "class-validator";
-
-export enum statusTeams {
-  'active'= 'active',
-  'inactive'= 'inactive',
-  'deleted'= 'deleted',
-  'rebranding'= 'rebranding'
-}
+import { IsArray, IsDateString, IsObject, IsOptional, IsString, isDateString } from "class-validator";
+import { StatisticTeam, status } from "../../team/interfaces/team/team.interface";
 
 export class TeamDTO {
-  id: string;
+
+  @IsString()
   name: string;
+
+  @IsString()
   headquarters: string;
-  countryOrigin: string;
-  status: statusTeams;
+
+  @IsDateString()
   startYear: Date;
+
+  @IsDateString()
+  debut: Date;
+
+  @IsArray()
+  pilots: string[];
+
+  @IsObject()
+  statisticTeam: StatisticTeam;
+
+  status: status;
 }
 
-export class CreateTeamDto {
+/* export class CreateTeamDto {
   @IsString()
   name;
 
@@ -44,4 +52,4 @@ export class UpdateTeamDTO {
   @IsString()
   @IsOptional()
   status;
-}
+} */

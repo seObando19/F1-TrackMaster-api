@@ -2,27 +2,27 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Pilot } from 'src/schemas/pilot.schema';
 import { Model } from 'mongoose';
-import { pilotStatus } from 'src/interfaces/pilot';
-import { CreatePilotDto, PilotDTO } from "../dto/pilot/index";
+import { status } from "../pilot/interfaces/pilot/pilot.interface";
+/* import { PilotDTO } from "../dto/pilot/index"; */
 
 @Injectable()
 export class PilotService {
 
   constructor(@InjectModel(Pilot.name) private pilotModel: Model<Pilot>) {}
 
-  async getPilots(): Promise<PilotDTO[]> {
+  async getPilots(): Promise<Pilot[]> {
     const pilots = await this.pilotModel.find();
     if(!pilots) throw new NotFoundException('Not found pilots');
-    return await this.pilotMap(pilots);
+    return pilots;
   }
 
-  async getPilotId(id: string): Promise<PilotDTO[]> {
+  async getPilotId(id: string): Promise<Pilot> {
     const pilot = await this.pilotModel.findById(id);
     if (!pilot) throw new NotFoundException('Resource no found');
-    return await this.pilotMap(pilot);
+    return pilot;
   }
 
-  async createPilot(payload: CreatePilotDto): Promise<Pilot> {
+  async createPilot(payload): Promise<Pilot> {
     const createdPilot = new this.pilotModel(payload);
     return createdPilot.save();
   }
@@ -36,21 +36,7 @@ export class PilotService {
   async deletePilot(id: string): Promise<void> {
     const pilot = await this.pilotModel.findById(id);
     if (!pilot) throw new NotFoundException('Resource no found');
-    pilot.status = pilotStatus.deleted;
+    pilot.status = status.deleted;
     pilot.save();
-  }
-
-  async pilotMap(obj:any){
-    let regis:any;
-    if(!obj || obj === undefined || obj === null) throw new NotFoundException('Resourse no found');
-    regis = obj.map((pilot) => {
-      name: pilot.name;
-      lastname: pilot.lastname;
-      nickname: pilot.nickname;
-      age: pilot.age;
-      nationality: pilot.nationality
-    });
-
-    return regis;
   }
 }

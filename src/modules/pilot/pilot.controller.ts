@@ -8,25 +8,30 @@ import {
   Post,
 } from '@nestjs/common';
 import { PilotService } from './pilot.service';
-import { CreatePilotDto, PilotDTO } from '../dto/pilot/index';
+// TODO - configurar los DTO aqui -- import { PilotDTO } from '../dto/pilot/index';
+import * as dotenv from "dotenv";
+import { Pilot } from 'src/schemas/pilot.schema';
 
-@Controller(`api/v1/pilot`)
+dotenv.config();
+const ENVIROMENT_DATA = process.env;
+
+@Controller(`api/${ENVIROMENT_DATA.API_VERSION}/pilots`)
 export class PilotController {
   constructor(private pilotService: PilotService) {}
 
   @Get()
-  getPilots(): Promise<PilotDTO[]> {
+  getPilots(): Promise<Pilot[]> {
     return this.pilotService.getPilots();
   }
 
   @Get(':id')
-  getPilotId(@Param('id') id: string): Promise<PilotDTO[]> {
+  getPilotId(@Param('id') id: string): Promise<Pilot> {
     return this.pilotService.getPilotId(id);
   }
 
   @Post()
-  createPilot(@Body() pilot: CreatePilotDto) {
-    return this.pilotService.createPilot(pilot);
+  createPilot(@Body() payload:any) {
+    return this.pilotService.createPilot(payload);
   }
 
   @Patch(':id')
