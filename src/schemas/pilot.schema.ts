@@ -23,7 +23,7 @@ export class Pilot {
   teamCurrent_id?: Team;
 
   @Prop()
-  teamHistory: string[]
+  teamHistory?: string[]
 
   @Prop()
   nationality: string;
@@ -32,7 +32,7 @@ export class Pilot {
   numberUse: number;
 
   @Prop({ type: Object})
-  statisticPilot: StatisticPilot;
+  statisticPilot?: StatisticPilot;
 
   @Prop({ default: status.active, required: false })
   status: status;
