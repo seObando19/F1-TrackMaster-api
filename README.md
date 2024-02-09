@@ -24,7 +24,14 @@
 
 ## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+This is an API that is part of a web project which has the objective of providing and providing information regarding Formula 1.
+
+## Endpoints
+
+* api/v1/pilots
+* api/v1/teams
+* api/v1/grandprixes
+* api/v1/cars
 
 ## Installation
 
@@ -58,15 +65,9 @@ $ npm run test:e2e
 $ npm run test:cov
 ```
 
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
 ## Stay in touch
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+Author - Sebastian Obando P.
 
 ## License
 
