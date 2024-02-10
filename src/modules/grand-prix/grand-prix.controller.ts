@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
 import { GrandPrixService } from './grand-prix.service';
 import { GrandPrix } from 'src/schemas/grand-prix.schema';
-// TODO implementar DTO ---import { GrandPrixDTO, createGrandPrix } from '../dto/grand-prix';
+import { GrandPrixDTO } from './dto';
 import * as dotenv from "dotenv";
 
 dotenv.config();
@@ -24,12 +24,12 @@ export class GrandPrixController {
   }
 
   @Post()
-  async createGrandPrix(@Body() payload: any) {
+  async createGrandPrix(@Body() payload: GrandPrixDTO) {
     return this.grandPrixService.createGrandPrix(payload);
   }
 
   @Put()
-  async updateGrandPrix(@Param('id') id: string, @Body() payload: any) {
+  async updateGrandPrix(@Param('id') id: string, @Body() payload: GrandPrixDTO) {
     return this.grandPrixService.updateGrandPrix(id, payload);
   }
 
