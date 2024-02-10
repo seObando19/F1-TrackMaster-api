@@ -2,8 +2,6 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Team } from 'src/schemas/team.schema';
-// TODO implementar DTO -- import { CreateTeamDto } from '../dto/team';
-// TODOD implementar DTO -- import { TeamDTO, UpdateTeamDTO } from '../dto/team/team.dto';
 import { status } from "./interfaces/team/team.interface";
 
 @Injectable()
@@ -22,12 +20,17 @@ export class TeamService {
     return team;
   }
 
-  async createTeam(payload: any): Promise<Team> {
-    const createTeam = new this.teamModel(payload);
-    return await createTeam.save();
+  async createTeam(payload: Team[]): Promise<Team[]> {
+    let teams: Team[] = [];
+    for (let index = 0; index < payload.length; index++) {
+      const element = payload[index];
+      const createTeam = new this.teamModel(element);
+      teams.push(await createTeam.save());
+    }
+    return teams;
   }
 
-  async updateTeam(id: string, payload: any): Promise<Team> {
+  async updateTeam(id: string, payload: Team): Promise<Team> {
     if(!id || !payload) throw new NotFoundException('Resource no found');
     await this.teamModel.findByIdAndUpdate(id, payload);
     const teamRegister = this.getTeamById(id);

@@ -1,6 +1,7 @@
 import { Body, Controller, Delete, Get, NotFoundException, Param, Patch, Post } from '@nestjs/common';
 import { CarService } from "./car.service";
 import { Car } from "../../schemas/car.schema";
+import { CarDTO } from './dto/car.dto';
 import * as dotenv from "dotenv";
 
 dotenv.config();
@@ -22,12 +23,12 @@ export class CarController {
   }
 
   @Post()
-  createCar(@Body() payload: any):Promise<Car>{
+  createCar(@Body() payload: CarDTO):Promise<Car>{
     return this.carService.createCar(payload);
   }
 
   @Patch(':id')
-  updateCar(@Param() id: string, @Body() payload: any):Promise<Car>{
+  updateCar(@Param() id: string, @Body() payload: CarDTO):Promise<Car>{
     return this.carService.updateCar(id, payload);
   }
 

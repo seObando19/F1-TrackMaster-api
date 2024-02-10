@@ -2,7 +2,6 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { GrandPrix } from 'src/schemas/grand-prix.schema';
-// TODO implementar DTO --- import { createGrandPrix, GrandPrixDTO } from '../dto/grand-prix';
 
 @Injectable()
 export class GrandPrixService {
@@ -19,12 +18,12 @@ export class GrandPrixService {
     return gp;
   }
 
-  async createGrandPrix(payload: any): Promise<GrandPrix> {
+  async createGrandPrix(payload: GrandPrix): Promise<GrandPrix> {
     const gp = new this.grandPrixModel(payload);
     return gp.save();
   }
 
-  async updateGrandPrix(id: string, payload: any) {
+  async updateGrandPrix(id: string, payload: GrandPrix) {
     if(!id && !payload) throw new NotFoundException('Resource no found');
     const gp = this.grandPrixModel.findByIdAndUpdate(id, payload);
     return gp;

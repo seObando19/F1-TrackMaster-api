@@ -1,9 +1,8 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Pilot } from 'src/schemas/pilot.schema';
 import { Model } from 'mongoose';
+import { Pilot } from 'src/schemas/pilot.schema';
 import { status } from "../pilot/interfaces/pilot/pilot.interface";
-/* import { PilotDTO } from "../dto/pilot/index"; */
 
 @Injectable()
 export class PilotService {
@@ -22,12 +21,12 @@ export class PilotService {
     return pilot;
   }
 
-  async createPilot(payload): Promise<Pilot> {
+  async createPilot(payload: Pilot): Promise<Pilot> {
     const createdPilot = new this.pilotModel(payload);
     return createdPilot.save();
   }
 
-  async updatePilot(id: string, payload: any) {
+  async updatePilot(id: string, payload: Pilot) {
     if (!id && !payload) throw new NotFoundException('Resource no found');
     const pilotUpdated = await this.pilotModel.findByIdAndUpdate(id, payload);
     return pilotUpdated;

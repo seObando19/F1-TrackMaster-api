@@ -14,13 +14,13 @@ export class Team {
   headquarters: string;
 
   @Prop()
-  startYear: Date;
+  startYear: string;
 
   @Prop()
-  debut: Date;
+  debut: string;
 
   @Prop()
-  pilots: string[]
+  pilots?: string[]
 
   @Prop({ type:Object })
   statisticTeam: StatisticTeam

@@ -21,12 +21,12 @@ export class CarService {
     return car;
   }
 
-  async createCar(payload: any): Promise<Car>{
+  async createCar(payload: Car): Promise<Car>{
     const newCar = new this.carModel(payload);
     return newCar.save();
   }
 
-  async updateCar(id: string, payload: any): Promise<Car>{
+  async updateCar(id: string, payload: Car): Promise<Car>{
     if(!id || !payload) throw new NotFoundException('Resource no found');
     const carUpdated = await this.carModel.findByIdAndUpdate(id, payload);
     return carUpdated;

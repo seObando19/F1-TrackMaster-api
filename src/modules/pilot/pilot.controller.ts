@@ -7,10 +7,10 @@ import {
   Patch,
   Post,
 } from '@nestjs/common';
-import { PilotService } from './pilot.service';
-// TODO - configurar los DTO aqui -- import { PilotDTO } from '../dto/pilot/index';
 import * as dotenv from "dotenv";
+import { PilotService } from './pilot.service';
 import { Pilot } from 'src/schemas/pilot.schema';
+import { PilotDTO } from './dto';
 
 dotenv.config();
 const ENVIROMENT_DATA = process.env;
@@ -30,12 +30,12 @@ export class PilotController {
   }
 
   @Post()
-  createPilot(@Body() payload:any) {
+  createPilot(@Body() payload:PilotDTO) {
     return this.pilotService.createPilot(payload);
   }
 
   @Patch(':id')
-  updatePilot(@Param('id') id: string, @Body() pilot: any) {
+  updatePilot(@Param('id') id: string, @Body() pilot: PilotDTO) {
     return this.pilotService.updatePilot(id, pilot);
   }
 
