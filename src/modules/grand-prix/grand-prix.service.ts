@@ -18,18 +18,23 @@ export class GrandPrixService {
     return gp;
   }
 
-  async createGrandPrix(payload: GrandPrix): Promise<GrandPrix> {
-    const gp = new this.grandPrixModel(payload);
-    return gp.save();
+  async createGrandPrix(payload: GrandPrix[]): Promise<GrandPrix[]> {
+    let gps: GrandPrix[] = [];
+    for (let index = 0; index < payload.length; index++) {
+      const element = payload[index];
+      const gpCreate = new this.grandPrixModel(element);
+      gps.push(await gpCreate.save());
+    }
+    return gps;
   }
 
-  async updateGrandPrix(id: string, payload: GrandPrix) {
+  async updateGrandPrix(id: string, payload: GrandPrix): Promise<GrandPrix> {
     if(!id && !payload) throw new NotFoundException('Resource no found');
     const gp = this.grandPrixModel.findByIdAndUpdate(id, payload);
     return gp;
   }
 
-  async deleteGrandPrix(id: string) {
+  async deleteGrandPrix(id: string): Promise<void> {
     if(!id) throw new NotFoundException('Resource no found');
     this.grandPrixModel.findByIdAndDelete(id);
   }

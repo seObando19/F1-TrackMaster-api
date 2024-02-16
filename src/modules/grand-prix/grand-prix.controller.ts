@@ -24,17 +24,17 @@ export class GrandPrixController {
   }
 
   @Post()
-  async createGrandPrix(@Body() payload: GrandPrixDTO) {
+  async createGrandPrix(@Body() payload: GrandPrixDTO[]): Promise<GrandPrix[]> {
     return this.grandPrixService.createGrandPrix(payload);
   }
 
   @Put()
-  async updateGrandPrix(@Param('id') id: string, @Body() payload: GrandPrixDTO) {
+  async updateGrandPrix(@Param('id') id: string, @Body() payload: GrandPrixDTO): Promise<GrandPrix> {
     return this.grandPrixService.updateGrandPrix(id, payload);
   }
 
   @Delete()
-  async deleteGrandPrix(@Param('id') id: string) {
+  async deleteGrandPrix(@Param('id') id: string): Promise<void> {
     return this.grandPrixService.deleteGrandPrix(id);
   }
 }

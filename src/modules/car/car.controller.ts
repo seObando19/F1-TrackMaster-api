@@ -23,7 +23,7 @@ export class CarController {
   }
 
   @Post()
-  createCar(@Body() payload: CarDTO):Promise<Car>{
+  createCar(@Body() payload: CarDTO[]):Promise<Car[]>{
     return this.carService.createCar(payload);
   }
 
