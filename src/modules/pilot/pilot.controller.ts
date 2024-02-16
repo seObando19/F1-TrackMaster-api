@@ -30,7 +30,7 @@ export class PilotController {
   }
 
   @Post()
-  createPilot(@Body() payload:PilotDTO) {
+  createPilot(@Body() payload:PilotDTO[]) {
     return this.pilotService.createPilot(payload);
   }
 

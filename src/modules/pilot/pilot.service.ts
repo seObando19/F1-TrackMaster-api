@@ -4,10 +4,13 @@ import { Model } from 'mongoose';
 import { Pilot } from 'src/schemas/pilot.schema';
 import { status } from "../pilot/interfaces/pilot/pilot.interface";
 
+import { TeamService } from "../team/team.service";
+import { Team } from 'src/schemas/team.schema';
+
 @Injectable()
 export class PilotService {
 
-  constructor(@InjectModel(Pilot.name) private pilotModel: Model<Pilot>) {}
+  constructor(@InjectModel(Pilot.name) private pilotModel: Model<Pilot>, private teamService:TeamService) {}
 
   async getPilots(): Promise<Pilot[]> {
     const pilots = await this.pilotModel.find();
@@ -21,9 +24,17 @@ export class PilotService {
     return pilot;
   }
 
-  async createPilot(payload: Pilot): Promise<Pilot> {
-    const createdPilot = new this.pilotModel(payload);
-    return createdPilot.save();
+  async createPilot(payload: Pilot[]): Promise<Pilot[]> {
+    let pilots: Pilot[] = [];
+    for (let index = 0; index < payload.length; index++) {
+      const element = payload[index];
+      const createdPilot = new this.pilotModel(element);
+      pilots.push(await createdPilot.save());
+      if(createdPilot.teamCurrent_id){
+        this.addPilotInTeam(createdPilot.teamCurrent_id, createdPilot.id);
+      }
+    }
+    return pilots;
   }
 
   async updatePilot(id: string, payload: Pilot) {
@@ -37,5 +48,16 @@ export class PilotService {
     if (!pilot) throw new NotFoundException('Resource no found');
     pilot.status = status.deleted;
     pilot.save();
+  }
+
+  async addPilotInTeam(teamId:Team, pilotId:string) {
+    const team_id = String(teamId);
+    const pilot_id: string = pilotId;
+
+    const team = await this.teamService.getTeamById(team_id);
+    if(!team.pilots.includes(pilot_id)){
+      team.pilots.push(pilot_id);
+      this.teamService.updateTeam(team_id, team);
+    }
   }
 }

@@ -21,9 +21,14 @@ export class CarService {
     return car;
   }
 
-  async createCar(payload: Car): Promise<Car>{
-    const newCar = new this.carModel(payload);
-    return newCar.save();
+  async createCar(payload: Car[]): Promise<Car[]>{
+    let cars: Car[] = [];
+    for (let index = 0; index < payload.length; index++) {
+      const element = payload[index];
+      const newCar = new this.carModel(element);
+      cars.push(await newCar.save());
+    }
+    return cars;
   }
 
   async updateCar(id: string, payload: Car): Promise<Car>{
