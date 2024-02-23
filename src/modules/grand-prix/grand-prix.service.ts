@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { GrandPrix } from 'src/schemas/grand-prix.schema';
+import { GrandPrix } from '../../schemas/grand-prix.schema';
 
 @Injectable()
 export class GrandPrixService {

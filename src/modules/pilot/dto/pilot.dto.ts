@@ -1,6 +1,6 @@
 import { IsArray, IsDateString, IsMongoId, IsObject, IsOptional, IsString, IsInt } from 'class-validator';
-import { status, StatisticPilot  } from "../interfaces/pilot/pilot.interface";
-import { Team } from 'src/schemas/team.schema';
+import { Status, StatisticPilot  } from "../interfaces/pilot/pilot.interface";
+import { Team } from '../../../schemas/team.schema';
 
 export class PilotDTO {
 
@@ -38,5 +38,5 @@ export class PilotDTO {
 
   @IsString()
   @IsOptional()
-  status: status;
+  status: Status;
 }

@@ -1,19 +1,19 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { Pilot } from 'src/schemas/pilot.schema';
-import { status } from "../pilot/interfaces/pilot/pilot.interface";
+import { Pilot } from '../../schemas/pilot.schema';
+import { Status } from "../pilot/interfaces/pilot/pilot.interface";
 
 import { TeamService } from "../team/team.service";
-import { Team } from 'src/schemas/team.schema';
+import { Team } from '../../schemas/team.schema';
 
 @Injectable()
 export class PilotService {
 
   constructor(@InjectModel(Pilot.name) private pilotModel: Model<Pilot>, private teamService:TeamService) {}
 
-  async getPilots(): Promise<Pilot[]> {
-    const pilots = await this.pilotModel.find();
+  async getPilots(query?): Promise<Pilot[]> {
+    const pilots = await this.pilotModel.find(query);
     if(!pilots) throw new NotFoundException('Not found pilots');
     return pilots;
   }
@@ -46,7 +46,7 @@ export class PilotService {
   async deletePilot(id: string): Promise<void> {
     const pilot = await this.pilotModel.findById(id);
     if (!pilot) throw new NotFoundException('Resource no found');
-    pilot.status = status.deleted;
+    pilot.status = Status.deleted;
     pilot.save();
   }
 
