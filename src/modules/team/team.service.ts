@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { Team } from 'src/schemas/team.schema';
+import { Team } from '../../schemas/team.schema';
 import { status } from "./interfaces/team/team.interface";
 
 @Injectable()

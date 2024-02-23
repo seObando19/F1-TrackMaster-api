@@ -8,11 +8,11 @@ export interface Pilot {
   nationality: string;
   numberUse: string;
   statisticPilot?: StatisticPilot;
-  status: status;
+  status: Status;
 }
 
 
-export enum status {
+export enum Status {
   "active"= "active",
   "deleted"= "deleted",
   "disabled"= "disabled",

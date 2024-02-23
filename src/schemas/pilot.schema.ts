@@ -1,6 +1,6 @@
 import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { HydratedDocument, Mongoose } from 'mongoose';
-import { status, StatisticPilot } from "../modules/pilot/interfaces/pilot/pilot.interface";
+import { Status, StatisticPilot } from "../modules/pilot/interfaces/pilot/pilot.interface";
 import { Team } from './team.schema';
 
 export type PilotDocument = HydratedDocument<Pilot>;
@@ -34,8 +34,8 @@ export class Pilot {
   @Prop({ type: Object})
   statisticPilot?: StatisticPilot;
 
-  @Prop({ default: status.active, required: false })
-  status: status;
+  @Prop({ default: Status.active, required: false })
+  status: Status;
 }
 
 export const PilotSchema = SchemaFactory.createForClass(Pilot);

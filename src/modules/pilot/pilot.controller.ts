@@ -6,11 +6,13 @@ import {
   Param,
   Patch,
   Post,
+  Query,
 } from '@nestjs/common';
 import * as dotenv from "dotenv";
 import { PilotService } from './pilot.service';
-import { Pilot } from 'src/schemas/pilot.schema';
+import { Pilot } from '../../schemas/pilot.schema';
 import { PilotDTO } from './dto';
+import { Status } from './interfaces/pilot/pilot.interface';
 
 dotenv.config();
 const ENVIROMENT_DATA = process.env;
@@ -20,8 +22,21 @@ export class PilotController {
   constructor(private pilotService: PilotService) {}
 
   @Get()
-  getPilots(): Promise<Pilot[]> {
-    return this.pilotService.getPilots();
+  getPilots(
+    @Query('name') name: string,
+    @Query('teamId') teamId: string,
+    @Query('numberUse') numberUse: number,
+    @Query('status') status: Status
+    ): Promise<Pilot[]> {
+    let query:any = {};
+
+    if(name) query.name = name;
+    if(teamId) query.teamCurrent_id = teamId;
+    if (numberUse) query.numberUse = numberUse;
+
+    query.status = status ? status : Status.active;
+
+    return this.pilotService.getPilots(query);
   }
 
   @Get(':id')
