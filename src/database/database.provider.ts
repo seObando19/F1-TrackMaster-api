@@ -6,5 +6,5 @@ dotenv.config();
 const ENVIROMENT_DATA = process.env;
 
 export const DatabaseProvider: DynamicModule = MongooseModule.forRoot(
-  `${ENVIROMENT_DATA.MONGO_DB_URI}${ENVIROMENT_DATA.DB_NAME}`,
+  `${ENVIROMENT_DATA.MONGO_DB_URI}${ENVIROMENT_DATA.MONGO_DB_NAME}`,
 );
