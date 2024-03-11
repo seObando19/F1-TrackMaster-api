@@ -2,12 +2,10 @@ import { Body, Controller, Delete, Get, NotFoundException, Param, Patch, Post } 
 import { TeamService } from './team.service';
 import { Team } from 'src/schemas/team.schema';
 import { TeamDTO } from './dto';
-import * as dotenv from "dotenv";
+import { configuration } from 'config/configuration';
 
-dotenv.config();
-const ENVIROMENT_DATA = process.env;
 
-@Controller(`api/${ENVIROMENT_DATA.API_VERSION}/teams`)
+@Controller(`api/${configuration().apiVersion}/teams`)
 export class TeamController {
   constructor( private teamService: TeamService ) {}
 

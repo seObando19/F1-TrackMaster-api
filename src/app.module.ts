@@ -1,19 +1,22 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { configuration } from 'config/configuration';
+import { DatabaseModule } from '../config/database/database.module';
+
 import { PilotModule } from './modules/pilot/pilot.module';
 import { TeamModule } from "./modules/team/team.module";
 import { GrandPrixModule } from './modules/grand-prix/grand-prix.module';
 
-import { DatabaseModule } from './database/database.module';
-import { ConfigModule, ConfigService } from '@nestjs/config';
 import { CarModule } from './modules/car/car.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
-      envFilePath: '../.env',
-      isGlobal: true
+      envFilePath: `${process.cwd()}/config/env/${process.env.NODE_ENV}.env`,
+      isGlobal: true,
+      load: [configuration]
     }),
     DatabaseModule,
     PilotModule,
