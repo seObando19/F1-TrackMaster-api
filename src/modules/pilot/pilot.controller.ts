@@ -8,16 +8,13 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
-import * as dotenv from "dotenv";
 import { PilotService } from './pilot.service';
 import { Pilot } from '../../schemas/pilot.schema';
 import { PilotDTO } from './dto';
 import { Status } from './interfaces/pilot/pilot.interface';
+import { configuration } from 'config/configuration';
 
-dotenv.config();
-const ENVIROMENT_DATA = process.env;
-
-@Controller(`api/${ENVIROMENT_DATA.API_VERSION}/pilots`)
+@Controller(`api/${configuration().apiVersion}/pilots`)
 export class PilotController {
   constructor(private pilotService: PilotService) {}
 

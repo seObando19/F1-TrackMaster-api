@@ -2,13 +2,10 @@ import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common'
 import { GrandPrixService } from './grand-prix.service';
 import { GrandPrix } from 'src/schemas/grand-prix.schema';
 import { GrandPrixDTO } from './dto';
-import * as dotenv from "dotenv";
-
-dotenv.config();
-const ENVIROMENT_DATA = process.env;
+import { configuration } from 'config/configuration';
 
 
-@Controller(`api/${ENVIROMENT_DATA.API_VERSION}/grandprixes`)
+@Controller(`api/${configuration().apiVersion}/grandprixes`)
 export class GrandPrixController {
 
   constructor( private grandPrixService: GrandPrixService) {}

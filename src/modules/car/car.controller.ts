@@ -2,12 +2,9 @@ import { Body, Controller, Delete, Get, NotFoundException, Param, Patch, Post } 
 import { CarService } from "./car.service";
 import { Car } from "../../schemas/car.schema";
 import { CarDTO } from './dto/car.dto';
-import * as dotenv from "dotenv";
+import { configuration } from 'config/configuration';
 
-dotenv.config();
-const ENVIROMENT_DATA = process.env;
-
-@Controller(`api/${ENVIROMENT_DATA.API_VERSION}/cars`)
+@Controller(`api/${configuration().apiVersion}/cars`)
 export class CarController {
   constructor(private carService: CarService) {}
 
