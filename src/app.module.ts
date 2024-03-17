@@ -10,6 +10,8 @@ import { TeamModule } from "./modules/team/team.module";
 import { GrandPrixModule } from './modules/grand-prix/grand-prix.module';
 
 import { CarModule } from './modules/car/car.module';
+import { UserModule } from './modules/user/user.module';
+import { AuthModule } from './modules/auth/auth.module';
 
 @Module({
   imports: [
@@ -23,6 +25,8 @@ import { CarModule } from './modules/car/car.module';
     TeamModule,
     GrandPrixModule,
     CarModule,
+    UserModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
