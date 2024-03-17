@@ -14,6 +14,7 @@ import { PilotDTO } from './dto';
 import { Status } from './interfaces/pilot/pilot.interface';
 import { configuration } from 'config/configuration';
 
+
 @Controller(`api/${configuration().apiVersion}/pilots`)
 export class PilotController {
   constructor(private pilotService: PilotService) {}

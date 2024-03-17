@@ -37,7 +37,7 @@ export class PilotService {
     return pilots;
   }
 
-  async updatePilot(id: string, payload: Pilot) {
+  async updatePilot(id: string, payload: Pilot):Promise<Pilot> {
     if (!id && !payload) throw new NotFoundException('Resource no found');
     const pilotUpdated = await this.pilotModel.findByIdAndUpdate(id, payload);
     return pilotUpdated;
