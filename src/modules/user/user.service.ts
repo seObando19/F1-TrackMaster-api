@@ -2,6 +2,9 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { User } from '../../schemas/user.schema';
+import * as bcrypt from "bcrypt";
+
+const saltRounds = 10;
 
 @Injectable()
 export class UserService {
@@ -24,6 +27,7 @@ export class UserService {
     for (let index = 0; index < payload.length; index++) {
       const element = payload[index];
       const createUser = new this.userModel(element);
+      createUser.password = await this.generateHashPassword(createUser.password);
       users.push(await createUser.save());
     }
     return users;
@@ -40,5 +44,15 @@ export class UserService {
     if(!user) throw new NotFoundException('Resource not found');
     user.deleteOne();
     user.save();
+  }
+
+  async generateHashPassword(password: string):Promise<string> {
+    let hashPass = await bcrypt.hash(password, saltRounds);
+    return hashPass;
+  }
+
+  async validateHashPassword(password: string, hash: string): Promise<boolean>{
+    let isMatch = await bcrypt.compare(password, hash);
+    return isMatch;
   }
 }
