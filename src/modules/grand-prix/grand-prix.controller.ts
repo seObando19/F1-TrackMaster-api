@@ -1,18 +1,29 @@
-import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, Query } from '@nestjs/common';
 import { GrandPrixService } from './grand-prix.service';
-import { GrandPrix } from 'src/schemas/grand-prix.schema';
+import { GrandPrix } from '../../schemas/grand-prix.schema';
 import { GrandPrixDTO } from './dto';
-import { configuration } from 'config/configuration';
+import { configuration } from '../../../config/configuration';
+import { ApiQuery, ApiTags } from '@nestjs/swagger';
+import { Status } from './interfaces/grand-prix/grand-prix.interface';
 
-
+@ApiTags('GrandPrixes')
 @Controller(`api/${configuration().apiVersion}/grandprixes`)
 export class GrandPrixController {
 
   constructor( private grandPrixService: GrandPrixService) {}
 
   @Get()
-  async GetAllGrandPrix():Promise<GrandPrix[]>{
-    return this.grandPrixService.getAllGrandPrix();
+  @ApiQuery({name: 'name', required: false})
+  @ApiQuery({name: 'status', required: false})
+  async GetAllGrandPrix(
+    @Query('name') name: string,
+    @Query('status') status: Status
+  ):Promise<GrandPrix[]>{
+    let query:any = {};
+
+    if(name) query.name = name;
+    query.status = status ? status : Status.active;
+    return this.grandPrixService.getAllGrandPrix(query);
   }
 
   @Get(':id')

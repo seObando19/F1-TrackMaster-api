@@ -5,10 +5,10 @@ export interface Team {
   debut: string;
   pilots?: string[];
   statisticTeam: StatisticTeam;
-  status: status;
+  status: Status;
 }
 
-export enum status {
+export enum Status {
   'active'= 'active',
   'inactive'= 'inactive',
   'deleted'= 'deleted',

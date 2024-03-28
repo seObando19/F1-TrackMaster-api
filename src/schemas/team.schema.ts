@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument } from 'mongoose';
-import { status, StatisticTeam } from "../modules/team/interfaces/team/team.interface";
+import { Status, StatisticTeam } from "../modules/team/interfaces/team/team.interface";
 
 export type TeamDocument = HydratedDocument<Team>
 
@@ -25,8 +25,8 @@ export class Team {
   @Prop({ type:Object })
   statisticTeam: StatisticTeam
 
-  @Prop({ default: status.active })
-  status: status;
+  @Prop({ default: Status.active })
+  status: Status;
 }
 
 export const TeamSchema = SchemaFactory.createForClass(Team);

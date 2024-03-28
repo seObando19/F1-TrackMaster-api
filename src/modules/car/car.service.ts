@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { Car } from 'src/schemas/car.schema';
+import { Car } from '../../schemas/car.schema';
 import { Status } from "./interfaces/car/car.interface";
 
 @Injectable()
@@ -9,8 +9,8 @@ export class CarService {
 
   constructor(@InjectModel(Car.name) private carModel: Model<Car>) {}
 
-  async getCars(): Promise<Car[]>{
-    const cars = await this.carModel.find();
+  async getCars(query?): Promise<Car[]>{
+    const cars = await this.carModel.find(query);
     if(!cars) throw new NotFoundException('Not found Cars');
     return cars;
   }

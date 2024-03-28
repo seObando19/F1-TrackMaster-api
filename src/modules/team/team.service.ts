@@ -2,15 +2,15 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Team } from '../../schemas/team.schema';
-import { status } from "./interfaces/team/team.interface";
+import { Status } from "./interfaces/team/team.interface";
 
 @Injectable()
 export class TeamService {
 
   constructor(@InjectModel(Team.name) private teamModel: Model<Team>) {}
 
-  async getTeams():Promise<Team[]> {
-    const teams = await this.teamModel.find();
+  async getTeams(query?):Promise<Team[]> {
+    const teams = await this.teamModel.find(query);
     return teams;
   }
 
@@ -40,7 +40,7 @@ export class TeamService {
   async deleteTeam(id: string) {
     const team = await this.teamModel.findById(id);
     if(!team) throw new NotFoundException('Resource no found');
-    team.status = status.deleted;
+    team.status = Status.deleted;
     team.save();
   }
 }
