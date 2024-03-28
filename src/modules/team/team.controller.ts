@@ -2,7 +2,7 @@ import { Body, Controller, Delete, Get, NotFoundException, Param, Patch, Post } 
 import { TeamService } from './team.service';
 import { Team } from 'src/schemas/team.schema';
 import { TeamDTO } from './dto';
-import { configuration } from 'config/configuration';
+import { configuration } from '../../../config/configuration';
 
 
 @Controller(`api/${configuration().apiVersion}/teams`)

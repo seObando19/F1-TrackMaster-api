@@ -12,7 +12,7 @@ import { PilotService } from './pilot.service';
 import { Pilot } from '../../schemas/pilot.schema';
 import { PilotDTO } from './dto';
 import { Status } from './interfaces/pilot/pilot.interface';
-import { configuration } from 'config/configuration';
+import { configuration } from '../../../config/configuration';
 
 
 @Controller(`api/${configuration().apiVersion}/pilots`)

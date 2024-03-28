@@ -1,5 +1,5 @@
 import { IsString, IsMongoId, IsArray } from "class-validator";
-import { Team } from "src/schemas/team.schema";
+import { Team } from "../../../schemas/team.schema";
 import { Status } from "../interfaces/car/car.interface";
 
 export class CarDTO {

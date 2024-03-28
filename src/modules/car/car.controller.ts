@@ -2,7 +2,7 @@ import { Body, Controller, Delete, Get, NotFoundException, Param, Patch, Post } 
 import { CarService } from "./car.service";
 import { Car } from "../../schemas/car.schema";
 import { CarDTO } from './dto/car.dto';
-import { configuration } from 'config/configuration';
+import { configuration } from '../../../config/configuration';
 
 @Controller(`api/${configuration().apiVersion}/cars`)
 export class CarController {
