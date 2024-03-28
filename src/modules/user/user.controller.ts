@@ -3,16 +3,19 @@ import { configuration } from '../../../config/configuration';
 import { UserService } from './user.service';
 import { UserDTO } from './dto';
 import { User } from 'src/schemas/user.schema';
+import { ApiQuery, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('User')
 @Controller(`api/${configuration().apiVersion}/user`)
 export class UserController {
   constructor(private userService: UserService){}
 
-  //TODO - ver que query values van aqui ↓
   @Get()
+  @ApiQuery({ name:'username', required: false })
+  @ApiQuery({ name:'email', required: false })
   getUsers(
-    @Query('username') username: string,
-    @Query('email') email: string
+    @Query('username') username?: string,
+    @Query('email') email?: string
   ):Promise<User[]>{
     let query: any = {};
     if(username) query.username;

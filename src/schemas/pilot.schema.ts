@@ -1,5 +1,5 @@
 import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
-import mongoose, { HydratedDocument, Mongoose } from 'mongoose';
+import mongoose, { HydratedDocument } from 'mongoose';
 import { Status, StatisticPilot } from "../modules/pilot/interfaces/pilot/pilot.interface";
 import { Team } from './team.schema';
 
