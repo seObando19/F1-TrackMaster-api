@@ -13,18 +13,23 @@ import { Pilot } from '../../schemas/pilot.schema';
 import { PilotDTO } from './dto';
 import { Status } from './interfaces/pilot/pilot.interface';
 import { configuration } from 'config/configuration';
+import { ApiQuery, ApiTags } from '@nestjs/swagger';
 
-
+@ApiTags('Pilots')
 @Controller(`api/${configuration().apiVersion}/pilots`)
 export class PilotController {
   constructor(private pilotService: PilotService) {}
 
   @Get()
+  @ApiQuery({name:"name", required:false})
+  @ApiQuery({name:"teamId", required:false})
+  @ApiQuery({name:"numberUse", required:false})
+  @ApiQuery({name:"status", required:false})
   getPilots(
-    @Query('name') name: string,
-    @Query('teamId') teamId: string,
-    @Query('numberUse') numberUse: number,
-    @Query('status') status: Status
+    @Query('name') name?: string,
+    @Query('teamId') teamId?: string,
+    @Query('numberUse') numberUse?: number,
+    @Query('status') status?: Status
     ): Promise<Pilot[]> {
     let query:any = {};
 

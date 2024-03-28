@@ -1,26 +1,34 @@
 import { IsArray, IsDateString, IsObject, IsOptional, IsString, isDateString } from "class-validator";
-import { StatisticTeam, status } from "../interfaces/team/team.interface";
+import { StatisticTeam, Status } from "../interfaces/team/team.interface";
+import { ApiProperty } from "@nestjs/swagger";
 
 export class TeamDTO {
 
   @IsString()
+  @ApiProperty()
   name: string;
 
   @IsString()
+  @ApiProperty()
   headquarters: string;
 
   @IsString()
+  @ApiProperty()
   startYear: string;
 
   @IsString()
+  @ApiProperty()
   debut: string;
 
   @IsArray()
   @IsOptional()
-  pilots: string[];
+  @ApiProperty({required:false})
+  pilots?: string[];
 
   @IsObject()
+  @ApiProperty()
   statisticTeam: StatisticTeam;
 
-  status: status;
+  @ApiProperty()
+  status: Status;
 }

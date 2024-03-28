@@ -9,8 +9,8 @@ export class CarService {
 
   constructor(@InjectModel(Car.name) private carModel: Model<Car>) {}
 
-  async getCars(): Promise<Car[]>{
-    const cars = await this.carModel.find();
+  async getCars(query?): Promise<Car[]>{
+    const cars = await this.carModel.find(query);
     if(!cars) throw new NotFoundException('Not found Cars');
     return cars;
   }

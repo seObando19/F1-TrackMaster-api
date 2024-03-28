@@ -1,30 +1,38 @@
 import { IsArray, IsDateString, IsMongoId, IsObject, IsOptional, IsString, IsInt } from 'class-validator';
 import { Status, StatisticPilot  } from "../interfaces/pilot/pilot.interface";
 import { Team } from '../../../schemas/team.schema';
+import { ApiProperty } from '@nestjs/swagger';
+
 
 export class PilotDTO {
 
   @IsString()
+  @ApiProperty()
   name: string;
 
   @IsString()
+  @ApiProperty()
   lastname: string;
 
   @IsArray()
   @IsOptional()
-  nickname: string[];
+  @ApiProperty({required: false})
+  nickname?: string[];
 
   @IsDateString()
+  @ApiProperty()
   birthday: Date;
 
   @IsMongoId()
   @IsOptional()
-  teamCurrent_id: Team;
+  @ApiProperty({required: false})
+  teamCurrent_id?: Team;
 
   @IsString()
   @IsArray()
   @IsOptional()
-  teamHistory: string[]
+  @ApiProperty({required:false})
+  teamHistory?: string[]
 
   @IsString()
   nationality: string;
@@ -34,9 +42,11 @@ export class PilotDTO {
 
   @IsObject()
   @IsOptional()
-  statisticPilot: StatisticPilot;
+  @ApiProperty({required: false})
+  statisticPilot?: StatisticPilot;
 
   @IsString()
   @IsOptional()
+  @ApiProperty({required:false})
   status: Status;
 }

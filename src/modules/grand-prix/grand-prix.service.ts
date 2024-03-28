@@ -8,8 +8,8 @@ export class GrandPrixService {
 
   constructor(@InjectModel(GrandPrix.name) private grandPrixModel: Model<GrandPrix>) {}
 
-  async getAllGrandPrix(): Promise<GrandPrix[]> {
-    return this.grandPrixModel.find();
+  async getAllGrandPrix(query?): Promise<GrandPrix[]> {
+    return this.grandPrixModel.find(query);
   }
 
   async getGrandPrixById(id: string): Promise<GrandPrix> {

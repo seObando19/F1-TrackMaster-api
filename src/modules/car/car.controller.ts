@@ -1,16 +1,28 @@
-import { Body, Controller, Delete, Get, NotFoundException, Param, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, NotFoundException, Param, Patch, Post, Query } from '@nestjs/common';
 import { CarService } from "./car.service";
 import { Car } from "../../schemas/car.schema";
 import { CarDTO } from './dto/car.dto';
 import { configuration } from 'config/configuration';
+import { ApiQuery, ApiTags } from '@nestjs/swagger';
+import { Status } from './interfaces/car/car.interface';
 
+@ApiTags('Cars')
 @Controller(`api/${configuration().apiVersion}/cars`)
 export class CarController {
   constructor(private carService: CarService) {}
 
   @Get()
-  getCars():Promise<Car[]>{
-    return this.carService.getCars();
+  @ApiQuery({name: 'name', required: false})
+  @ApiQuery({name: 'status', required: false})
+  getCars(
+    @Query('name') name: string,
+    @Query('status') status: Status
+  ):Promise<Car[]>{
+    let query:any = {};
+
+    if(name) query.name = name;
+    query.status = status ? status : Status.active;
+    return this.carService.getCars(query);
   }
 
   @Get(':id')
