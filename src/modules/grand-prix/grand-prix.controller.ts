@@ -1,8 +1,8 @@
 import { Body, Controller, Delete, Get, Param, Post, Put, Query } from '@nestjs/common';
 import { GrandPrixService } from './grand-prix.service';
-import { GrandPrix } from 'src/schemas/grand-prix.schema';
+import { GrandPrix } from '../../schemas/grand-prix.schema';
 import { GrandPrixDTO } from './dto';
-import { configuration } from 'config/configuration';
+import { configuration } from '../../../config/configuration';
 import { ApiQuery, ApiTags } from '@nestjs/swagger';
 import { Status } from './interfaces/grand-prix/grand-prix.interface';
 
