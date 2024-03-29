@@ -1,10 +1,11 @@
-import { Body, Controller, Delete, Get, NotFoundException, Param, Patch, Post, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, NotFoundException, Param, Patch, Post, Query, UseGuards } from '@nestjs/common';
 import { CarService } from "./car.service";
 import { Car } from "../../schemas/car.schema";
 import { CarDTO } from './dto/car.dto';
 import { configuration } from '../../../config/configuration';
-import { ApiQuery, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { Status } from './interfaces/car/car.interface';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
 @ApiTags('Cars')
 @Controller(`api/${configuration().apiVersion}/cars`)
@@ -32,16 +33,22 @@ export class CarController {
   }
 
   @Post()
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
   createCar(@Body() payload: CarDTO[]):Promise<Car[]>{
     return this.carService.createCar(payload);
   }
 
   @Patch(':id')
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
   updateCar(@Param() id: string, @Body() payload: CarDTO):Promise<Car>{
     return this.carService.updateCar(id, payload);
   }
 
   @Delete('id')
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
   deleteCar(@Param() id: string):Promise<void>{
     return this.carService.deleteCar(id);
   }
