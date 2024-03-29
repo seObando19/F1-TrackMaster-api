@@ -7,13 +7,15 @@ import {
   Patch,
   Post,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { PilotService } from './pilot.service';
 import { Pilot } from '../../schemas/pilot.schema';
 import { PilotDTO } from './dto';
 import { Status } from './interfaces/pilot/pilot.interface';
 import { configuration } from '../../../config/configuration';
-import { ApiQuery, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiQuery, ApiTags } from '@nestjs/swagger';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
 @ApiTags('Pilots')
 @Controller(`api/${configuration().apiVersion}/pilots`)
@@ -48,16 +50,22 @@ export class PilotController {
   }
 
   @Post()
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
   createPilot(@Body() payload:PilotDTO[]) {
     return this.pilotService.createPilot(payload);
   }
 
   @Patch(':id')
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
   updatePilot(@Param('id') id: string, @Body() pilot: PilotDTO) {
     return this.pilotService.updatePilot(id, pilot);
   }
 
   @Delete(':id')
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
   deletePilot(@Param('id') id: string): Promise<void> {
     return this.pilotService.deletePilot(id);
   }
