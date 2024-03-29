@@ -1,10 +1,11 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Put, Query, UseGuards } from '@nestjs/common';
 import { GrandPrixService } from './grand-prix.service';
 import { GrandPrix } from '../../schemas/grand-prix.schema';
 import { GrandPrixDTO } from './dto';
 import { configuration } from '../../../config/configuration';
-import { ApiQuery, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { Status } from './interfaces/grand-prix/grand-prix.interface';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
 @ApiTags('GrandPrixes')
 @Controller(`api/${configuration().apiVersion}/grandprixes`)
@@ -32,16 +33,22 @@ export class GrandPrixController {
   }
 
   @Post()
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
   async createGrandPrix(@Body() payload: GrandPrixDTO[]): Promise<GrandPrix[]> {
     return this.grandPrixService.createGrandPrix(payload);
   }
 
-  @Put()
+  @Patch(':id')
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
   async updateGrandPrix(@Param('id') id: string, @Body() payload: GrandPrixDTO): Promise<GrandPrix> {
     return this.grandPrixService.updateGrandPrix(id, payload);
   }
 
-  @Delete()
+  @Delete(':id')
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
   async deleteGrandPrix(@Param('id') id: string): Promise<void> {
     return this.grandPrixService.deleteGrandPrix(id);
   }

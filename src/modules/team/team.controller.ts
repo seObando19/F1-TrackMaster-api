@@ -1,10 +1,11 @@
-import { Body, Controller, Delete, Get, NotFoundException, Param, Patch, Post, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, NotFoundException, Param, Patch, Post, Query, UseGuards } from '@nestjs/common';
 import { TeamService } from './team.service';
 import { Team } from 'src/schemas/team.schema';
 import { TeamDTO } from './dto';
 import { configuration } from '../../../config/configuration';
-import { ApiQuery, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { Status } from './interfaces/team/team.interface';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
 @ApiTags('Teams')
 @Controller(`api/${configuration().apiVersion}/teams`)
@@ -33,16 +34,22 @@ export class TeamController {
   }
 
   @Post()
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
   createTeam(@Body() payload: TeamDTO[]): Promise<Team[]> {
     return this.teamService.createTeam(payload);
   }
 
   @Patch(':id')
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
   updateTeam(@Param('id') id: string, @Body() payload: TeamDTO): Promise<Team>  {
     return this.teamService.updateTeam(id, payload);
   }
 
   @Delete(':id')
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
   deleteTeam(@Param('id') id: string) {
     this.teamService.deleteTeam(id);
   }

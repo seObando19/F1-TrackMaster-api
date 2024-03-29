@@ -7,6 +7,7 @@ import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const config = new DocumentBuilder()
+    .addBearerAuth()
     .setTitle('F1-TrackMaster Api')
     .setDescription('The f1 Api for project F1-TrackMaster')
     .setVersion('1.0')
