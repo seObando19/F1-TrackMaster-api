@@ -6,6 +6,9 @@ import { configuration } from '../../../config/configuration';
 import { ApiBearerAuth, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { Status } from './interfaces/grand-prix/grand-prix.interface';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { HasRoles } from '../../../config/custom-decorators/roles.decorator';
+import { Roles } from '../user/interfaces/user.interface';
+import { RolesGuard } from '../auth/roles.guard';
 
 @ApiTags('GrandPrixes')
 @Controller(`api/${configuration().apiVersion}/grandprixes`)
@@ -14,6 +17,8 @@ export class GrandPrixController {
   constructor( private grandPrixService: GrandPrixService) {}
 
   @Get()
+  @HasRoles(Roles.superAdmin, Roles.admin, Roles.userRegister)
+  @UseGuards(RolesGuard)
   @ApiQuery({name: 'name', required: false})
   @ApiQuery({name: 'status', required: false})
   async GetAllGrandPrix(
@@ -28,27 +33,32 @@ export class GrandPrixController {
   }
 
   @Get(':id')
+  @HasRoles(Roles.superAdmin, Roles.admin, Roles.userRegister)
+  @UseGuards(RolesGuard)
   async GetGrandPrixById(@Param('id') id: string): Promise<GrandPrix> {
     return this.grandPrixService.getGrandPrixById(id);
   }
 
   @Post()
   @ApiBearerAuth()
-  @UseGuards(JwtAuthGuard)
+  @HasRoles(Roles.superAdmin, Roles.admin)
+  @UseGuards(JwtAuthGuard, RolesGuard)
   async createGrandPrix(@Body() payload: GrandPrixDTO[]): Promise<GrandPrix[]> {
     return this.grandPrixService.createGrandPrix(payload);
   }
 
   @Patch(':id')
   @ApiBearerAuth()
-  @UseGuards(JwtAuthGuard)
+  @HasRoles(Roles.superAdmin, Roles.admin)
+  @UseGuards(JwtAuthGuard, RolesGuard)
   async updateGrandPrix(@Param('id') id: string, @Body() payload: GrandPrixDTO): Promise<GrandPrix> {
     return this.grandPrixService.updateGrandPrix(id, payload);
   }
 
   @Delete(':id')
   @ApiBearerAuth()
-  @UseGuards(JwtAuthGuard)
+  @HasRoles(Roles.superAdmin, Roles.admin)
+  @UseGuards(JwtAuthGuard, RolesGuard)
   async deleteGrandPrix(@Param('id') id: string): Promise<void> {
     return this.grandPrixService.deleteGrandPrix(id);
   }

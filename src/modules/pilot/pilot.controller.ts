@@ -16,6 +16,9 @@ import { Status } from './interfaces/pilot/pilot.interface';
 import { configuration } from '../../../config/configuration';
 import { ApiBearerAuth, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { HasRoles } from '../../../config/custom-decorators/roles.decorator';
+import { Roles } from '../user/interfaces/user.interface';
+import { RolesGuard } from '../auth/roles.guard';
 
 @ApiTags('Pilots')
 @Controller(`api/${configuration().apiVersion}/pilots`)
@@ -23,6 +26,8 @@ export class PilotController {
   constructor(private pilotService: PilotService) {}
 
   @Get()
+  @HasRoles(Roles.superAdmin, Roles.admin, Roles.userRegister)
+  @UseGuards(RolesGuard)
   @ApiQuery({name:"name", required:false})
   @ApiQuery({name:"teamId", required:false})
   @ApiQuery({name:"numberUse", required:false})
@@ -45,27 +50,32 @@ export class PilotController {
   }
 
   @Get(':id')
+  @HasRoles(Roles.superAdmin, Roles.admin, Roles.userRegister)
+  @UseGuards(RolesGuard)
   getPilotId(@Param('id') id: string): Promise<Pilot> {
     return this.pilotService.getPilotId(id);
   }
 
   @Post()
   @ApiBearerAuth()
-  @UseGuards(JwtAuthGuard)
+  @HasRoles(Roles.superAdmin, Roles.admin)
+  @UseGuards(JwtAuthGuard, RolesGuard)
   createPilot(@Body() payload:PilotDTO[]) {
     return this.pilotService.createPilot(payload);
   }
 
   @Patch(':id')
   @ApiBearerAuth()
-  @UseGuards(JwtAuthGuard)
+  @HasRoles(Roles.superAdmin, Roles.admin)
+  @UseGuards(JwtAuthGuard, RolesGuard)
   updatePilot(@Param('id') id: string, @Body() pilot: PilotDTO) {
     return this.pilotService.updatePilot(id, pilot);
   }
 
   @Delete(':id')
   @ApiBearerAuth()
-  @UseGuards(JwtAuthGuard)
+  @HasRoles(Roles.superAdmin, Roles.admin)
+  @UseGuards(JwtAuthGuard, RolesGuard)
   deletePilot(@Param('id') id: string): Promise<void> {
     return this.pilotService.deletePilot(id);
   }
