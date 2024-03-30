@@ -14,7 +14,7 @@ export class AuthService {
     const isMatch = await this.userService.validateHashPassword(pass, user.password);
     if(!isMatch) throw new HttpException('PASSWORD_INVALID', 403);
 
-    const payload = { sub: user._id,  name: user.name};
+    const payload = { sub: user._id,  name: user.name, roles: user.roles};
     const token = await this.jwtService.signAsync(payload)
 
     const data = {
