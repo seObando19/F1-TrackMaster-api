@@ -5,9 +5,13 @@ import { UserDTO } from './dto';
 import { User } from 'src/schemas/user.schema';
 import { ApiBearerAuth, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { RolesGuard } from '../auth/roles.guard';
+import { HasRoles } from '../../../config/custom-decorators/roles.decorator';
+import { Roles } from './interfaces/user.interface';
 
 @ApiBearerAuth()
-@UseGuards(JwtAuthGuard)
+@HasRoles(Roles.superAdmin, Roles.admin)
+@UseGuards(JwtAuthGuard, RolesGuard)
 @ApiTags('User')
 @Controller(`api/${configuration().apiVersion}/user`)
 export class UserController {

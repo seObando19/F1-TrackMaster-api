@@ -6,6 +6,9 @@ import { configuration } from '../../../config/configuration';
 import { ApiBearerAuth, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { Status } from './interfaces/team/team.interface';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { RolesGuard } from '../auth/roles.guard';
+import { HasRoles } from '../../../config/custom-decorators/roles.decorator';
+import { Roles } from '../user/interfaces/user.interface';
 
 @ApiTags('Teams')
 @Controller(`api/${configuration().apiVersion}/teams`)
@@ -13,6 +16,8 @@ export class TeamController {
   constructor( private teamService: TeamService ) {}
 
   @Get()
+  @HasRoles(Roles.superAdmin, Roles.admin, Roles.userRegister)
+  @UseGuards(RolesGuard)
   @ApiQuery({name: 'name', required: false})
   @ApiQuery({name: 'status', required: false})
   getTeams(
@@ -28,6 +33,8 @@ export class TeamController {
   }
 
   @Get(':id')
+  @HasRoles(Roles.superAdmin, Roles.admin, Roles.userRegister)
+  @UseGuards(RolesGuard)
   getTeamById(@Param('id') id: string): Promise<Team> {
     if(!id) throw new NotFoundException('Resource no found');
     return this.teamService.getTeamById(id);
@@ -35,21 +42,24 @@ export class TeamController {
 
   @Post()
   @ApiBearerAuth()
-  @UseGuards(JwtAuthGuard)
+  @HasRoles(Roles.superAdmin, Roles.admin)
+  @UseGuards(JwtAuthGuard, RolesGuard)
   createTeam(@Body() payload: TeamDTO[]): Promise<Team[]> {
     return this.teamService.createTeam(payload);
   }
 
   @Patch(':id')
   @ApiBearerAuth()
-  @UseGuards(JwtAuthGuard)
+  @HasRoles(Roles.superAdmin, Roles.admin)
+  @UseGuards(JwtAuthGuard, RolesGuard)
   updateTeam(@Param('id') id: string, @Body() payload: TeamDTO): Promise<Team>  {
     return this.teamService.updateTeam(id, payload);
   }
 
   @Delete(':id')
   @ApiBearerAuth()
-  @UseGuards(JwtAuthGuard)
+  @HasRoles(Roles.superAdmin, Roles.admin)
+  @UseGuards(JwtAuthGuard, RolesGuard)
   deleteTeam(@Param('id') id: string) {
     this.teamService.deleteTeam(id);
   }
