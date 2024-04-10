@@ -3,7 +3,7 @@ import { TeamService } from './team.service';
 import { Team } from 'src/schemas/team.schema';
 import { TeamDTO } from './dto';
 import { configuration } from '../../../config/configuration';
-import { ApiBearerAuth, ApiQuery, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { Status } from './interfaces/team/team.interface';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
@@ -19,7 +19,7 @@ export class TeamController {
   @HasRoles(Roles.superAdmin, Roles.admin, Roles.userRegister)
   @UseGuards(RolesGuard)
   @ApiQuery({name: 'name', required: false})
-  @ApiQuery({name: 'status', required: false})
+  @ApiQuery({name: 'status', enum:Status, required: false})
   getTeams(
     @Query('name') name: string,
     @Query('status') status: Status
@@ -44,6 +44,7 @@ export class TeamController {
   @ApiBearerAuth()
   @HasRoles(Roles.superAdmin, Roles.admin)
   @UseGuards(JwtAuthGuard, RolesGuard)
+  @ApiBody({type: [TeamDTO]})
   createTeam(@Body() payload: TeamDTO[]): Promise<Team[]> {
     return this.teamService.createTeam(payload);
   }

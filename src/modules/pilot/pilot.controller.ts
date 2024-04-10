@@ -14,7 +14,7 @@ import { Pilot } from '../../schemas/pilot.schema';
 import { PilotDTO } from './dto';
 import { Status } from './interfaces/pilot/pilot.interface';
 import { configuration } from '../../../config/configuration';
-import { ApiBearerAuth, ApiQuery, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { HasRoles } from '../../../config/custom-decorators/roles.decorator';
 import { Roles } from '../user/interfaces/user.interface';
@@ -31,7 +31,7 @@ export class PilotController {
   @ApiQuery({name:"name", required:false})
   @ApiQuery({name:"teamId", required:false})
   @ApiQuery({name:"numberUse", required:false})
-  @ApiQuery({name:"status", required:false})
+  @ApiQuery({name:"status", enum:Status, required:false})
   getPilots(
     @Query('name') name?: string,
     @Query('teamId') teamId?: string,
@@ -60,6 +60,7 @@ export class PilotController {
   @ApiBearerAuth()
   @HasRoles(Roles.superAdmin, Roles.admin)
   @UseGuards(JwtAuthGuard, RolesGuard)
+  @ApiBody({type: [PilotDTO]})
   createPilot(@Body() payload:PilotDTO[]) {
     return this.pilotService.createPilot(payload);
   }
