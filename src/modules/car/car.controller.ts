@@ -3,7 +3,7 @@ import { CarService } from "./car.service";
 import { Car } from "../../schemas/car.schema";
 import { CarDTO } from './dto/car.dto';
 import { configuration } from '../../../config/configuration';
-import { ApiBearerAuth, ApiQuery, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { Status } from './interfaces/car/car.interface';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { HasRoles } from '../../../config/custom-decorators/roles.decorator';
@@ -19,7 +19,7 @@ export class CarController {
   @HasRoles(Roles.superAdmin, Roles.admin, Roles.userRegister)
   @UseGuards(RolesGuard)
   @ApiQuery({name: 'name', required: false})
-  @ApiQuery({name: 'status', required: false})
+  @ApiQuery({name: 'status', enum: Status, required: false})
   getCars(
     @Query('name') name: string,
     @Query('status') status: Status
@@ -34,7 +34,7 @@ export class CarController {
   @Get(':id')
   @HasRoles(Roles.superAdmin, Roles.admin, Roles.userRegister)
   @UseGuards(RolesGuard)
-  getCarById(@Param() id: string):Promise<Car> {
+  getCarById(@Param(':id') id: string):Promise<Car> {
     if(!id) throw new NotFoundException('Error in id..');
     return this.carService.getCarById(id);
   }
@@ -43,6 +43,7 @@ export class CarController {
   @ApiBearerAuth()
   @HasRoles(Roles.superAdmin, Roles.admin)
   @UseGuards(JwtAuthGuard, RolesGuard)
+  @ApiBody({type:CarDTO})
   createCar(@Body() payload: CarDTO[]):Promise<Car[]>{
     return this.carService.createCar(payload);
   }

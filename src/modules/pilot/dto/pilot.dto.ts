@@ -35,9 +35,11 @@ export class PilotDTO {
   teamHistory?: string[]
 
   @IsString()
+  @ApiProperty()
   nationality: string;
 
   @IsInt()
+  @ApiProperty()
   numberUse: number;
 
   @IsObject()
@@ -47,6 +49,6 @@ export class PilotDTO {
 
   @IsString()
   @IsOptional()
-  @ApiProperty({required:false})
+  @ApiProperty({required:false, enum:Status})
   status: Status;
 }
