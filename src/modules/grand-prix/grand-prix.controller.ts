@@ -3,7 +3,7 @@ import { GrandPrixService } from './grand-prix.service';
 import { GrandPrix } from '../../schemas/grand-prix.schema';
 import { GrandPrixDTO } from './dto';
 import { configuration } from '../../../config/configuration';
-import { ApiBearerAuth, ApiQuery, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { Status } from './interfaces/grand-prix/grand-prix.interface';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { HasRoles } from '../../../config/custom-decorators/roles.decorator';
@@ -20,7 +20,7 @@ export class GrandPrixController {
   @HasRoles(Roles.superAdmin, Roles.admin, Roles.userRegister)
   @UseGuards(RolesGuard)
   @ApiQuery({name: 'name', required: false})
-  @ApiQuery({name: 'status', required: false})
+  @ApiQuery({name: 'status', enum: Status, required: false})
   async GetAllGrandPrix(
     @Query('name') name: string,
     @Query('status') status: Status
@@ -43,6 +43,7 @@ export class GrandPrixController {
   @ApiBearerAuth()
   @HasRoles(Roles.superAdmin, Roles.admin)
   @UseGuards(JwtAuthGuard, RolesGuard)
+  @ApiBody({type:[GrandPrixDTO]})
   async createGrandPrix(@Body() payload: GrandPrixDTO[]): Promise<GrandPrix[]> {
     return this.grandPrixService.createGrandPrix(payload);
   }
