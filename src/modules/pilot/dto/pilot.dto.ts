@@ -52,3 +52,56 @@ export class PilotDTO {
   @ApiProperty({required:false, enum:Status})
   status: Status;
 }
+
+export class UpdateDTO {
+
+  @IsString()
+  @IsOptional()
+  @ApiProperty()
+  name: string;
+
+  @IsString()
+  @ApiProperty()
+  @IsOptional()
+  lastname: string;
+
+  @IsArray()
+  @IsOptional()
+  @ApiProperty({required: false})
+  nickname?: string[];
+
+  @IsDateString()
+  @ApiProperty()
+  @IsOptional()
+  birthday: Date;
+
+  @IsMongoId()
+  @IsOptional()
+  @ApiProperty({required: false})
+  teamCurrent_id?: Team;
+
+  @IsString()
+  @IsArray()
+  @IsOptional()
+  @ApiProperty({required:false})
+  teamHistory?: string[]
+
+  @IsString()
+  @IsOptional()
+  @ApiProperty()
+  nationality: string;
+
+  /* @IsInt()
+  @ApiProperty()
+  numberUse: number; */
+
+  @IsObject()
+  @IsOptional()
+  @ApiProperty({required: false})
+  statisticPilot?: StatisticPilot;
+
+  @IsString()
+  @IsOptional()
+  @ApiProperty({required:false, enum:Status})
+  status: Status;
+}

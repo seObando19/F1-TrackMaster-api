@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Pilot } from '../../schemas/pilot.schema';
@@ -29,6 +29,10 @@ export class PilotService {
     for (let index = 0; index < payload.length; index++) {
       const element = payload[index];
       const createdPilot = new this.pilotModel(element);
+
+      const isNumberUse: boolean = await this.validateUsignNumberPilot(createdPilot.numberUse);
+      if(isNumberUse) throw new HttpException(`Number ${createdPilot.numberUse} is using by other pilot`, HttpStatus.BAD_REQUEST);
+
       pilots.push(await createdPilot.save());
       if(createdPilot.teamCurrent_id){
         this.addPilotInTeam(createdPilot.teamCurrent_id, createdPilot.id);
@@ -37,9 +41,10 @@ export class PilotService {
     return pilots;
   }
 
-  async updatePilot(id: string, payload: Pilot):Promise<Pilot> {
+  async updatePilot(id: string, payload: Partial<Pilot>):Promise<Pilot> {
     if (!id && !payload) throw new NotFoundException('Resource no found');
-    const pilotUpdated = await this.pilotModel.findByIdAndUpdate(id, payload);
+    await this.pilotModel.findByIdAndUpdate(id, payload);
+    const pilotUpdated = await this.getPilotId(id);
     return pilotUpdated;
   }
 
@@ -59,5 +64,11 @@ export class PilotService {
       team.pilots.push(pilot_id);
       this.teamService.updateTeam(team_id, team);
     }
+  }
+
+  async validateUsignNumberPilot(validateNumber:number): Promise<boolean>{
+    const pilot: Pilot[] = await this.getPilots({numberUse: validateNumber});
+    if(pilot[0]) return true;
+    return false;
   }
 }

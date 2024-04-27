@@ -11,7 +11,7 @@ import {
 } from '@nestjs/common';
 import { PilotService } from './pilot.service';
 import { Pilot } from '../../schemas/pilot.schema';
-import { PilotDTO } from './dto';
+import { PilotDTO, UpdateDTO } from './dto';
 import { Status } from './interfaces/pilot/pilot.interface';
 import { configuration } from '../../../config/configuration';
 import { ApiBearerAuth, ApiBody, ApiQuery, ApiTags } from '@nestjs/swagger';
@@ -26,7 +26,6 @@ export class PilotController {
   constructor(private pilotService: PilotService) {}
 
   @Get()
-  @HasRoles(Roles.superAdmin, Roles.admin, Roles.userRegister)
   @UseGuards(RolesGuard)
   @ApiQuery({name:"name", required:false})
   @ApiQuery({name:"teamId", required:false})
@@ -50,7 +49,6 @@ export class PilotController {
   }
 
   @Get(':id')
-  @HasRoles(Roles.superAdmin, Roles.admin, Roles.userRegister)
   @UseGuards(RolesGuard)
   getPilotId(@Param('id') id: string): Promise<Pilot> {
     return this.pilotService.getPilotId(id);
@@ -69,7 +67,7 @@ export class PilotController {
   @ApiBearerAuth()
   @HasRoles(Roles.superAdmin, Roles.admin)
   @UseGuards(JwtAuthGuard, RolesGuard)
-  updatePilot(@Param('id') id: string, @Body() pilot: PilotDTO) {
+  updatePilot(@Param('id') id: string, @Body() pilot: UpdateDTO) {
     return this.pilotService.updatePilot(id, pilot);
   }
 
