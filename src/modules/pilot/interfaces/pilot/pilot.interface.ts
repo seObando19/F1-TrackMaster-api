@@ -13,10 +13,10 @@ export interface Pilot {
 
 
 export enum Status {
-  "active"= "active",
-  "deleted"= "deleted",
-  "disabled"= "disabled",
-  "retired"= "retired"
+  active = "active",
+  deleted = "deleted",
+  disabled = "disabled",
+  retired = "retired"
 }
 
 export type StatisticPilot =  {

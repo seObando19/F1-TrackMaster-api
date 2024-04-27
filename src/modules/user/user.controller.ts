@@ -39,7 +39,7 @@ export class UserController {
   }
 
   @Post()
-  @ApiBody({type:UserDTO})
+  @ApiBody({type:[UserDTO]})
   createUser(@Body() payload: UserDTO[]):Promise<User[]>{
     return this.userService.createUser(payload);
   }
