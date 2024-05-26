@@ -28,7 +28,7 @@ export class GrandPrixService {
     return gps;
   }
 
-  async updateGrandPrix(id: string, payload: GrandPrix): Promise<GrandPrix> {
+  async updateGrandPrix(id: string, payload: Partial<GrandPrix>): Promise<GrandPrix> {
     if(!id && !payload) throw new NotFoundException('Resource no found');
     const gp = this.grandPrixModel.findByIdAndUpdate(id, payload);
     return gp;

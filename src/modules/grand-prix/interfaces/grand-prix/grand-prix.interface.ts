@@ -10,10 +10,10 @@ export interface GrandPrix {
 
 
 export enum Status {
-  'active'= 'active',
-  'inactive' = 'inactive',
-  'canceled' = 'canceled',
-  'contract-end' = 'contract-end'
+  active      = 'active',
+  inactive    = 'inactive',
+  canceled    = 'canceled',
+  contractEnd = 'contract-end'
 }
 
 export interface Circuit {

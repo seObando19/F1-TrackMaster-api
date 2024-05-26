@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post, Put, Query, UseGuards } from '@nestjs/common';
 import { GrandPrixService } from './grand-prix.service';
 import { GrandPrix } from '../../schemas/grand-prix.schema';
-import { GrandPrixDTO } from './dto';
+import { GrandPrixCreateDTO, GrandPrixUpdateDTO } from './dto';
 import { configuration } from '../../../config/configuration';
 import { ApiBearerAuth, ApiBody, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { Status } from './interfaces/grand-prix/grand-prix.interface';
@@ -17,7 +17,6 @@ export class GrandPrixController {
   constructor( private grandPrixService: GrandPrixService) {}
 
   @Get()
-  @HasRoles(Roles.superAdmin, Roles.admin, Roles.userRegister)
   @UseGuards(RolesGuard)
   @ApiQuery({name: 'name', required: false})
   @ApiQuery({name: 'status', enum: Status, required: false})
@@ -33,7 +32,6 @@ export class GrandPrixController {
   }
 
   @Get(':id')
-  @HasRoles(Roles.superAdmin, Roles.admin, Roles.userRegister)
   @UseGuards(RolesGuard)
   async GetGrandPrixById(@Param('id') id: string): Promise<GrandPrix> {
     return this.grandPrixService.getGrandPrixById(id);
@@ -43,8 +41,8 @@ export class GrandPrixController {
   @ApiBearerAuth()
   @HasRoles(Roles.superAdmin, Roles.admin)
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @ApiBody({type:[GrandPrixDTO]})
-  async createGrandPrix(@Body() payload: GrandPrixDTO[]): Promise<GrandPrix[]> {
+  @ApiBody({type:[GrandPrixCreateDTO]})
+  async createGrandPrix(@Body() payload: GrandPrixCreateDTO[]): Promise<GrandPrix[]> {
     return this.grandPrixService.createGrandPrix(payload);
   }
 
@@ -52,7 +50,7 @@ export class GrandPrixController {
   @ApiBearerAuth()
   @HasRoles(Roles.superAdmin, Roles.admin)
   @UseGuards(JwtAuthGuard, RolesGuard)
-  async updateGrandPrix(@Param('id') id: string, @Body() payload: GrandPrixDTO): Promise<GrandPrix> {
+  async updateGrandPrix(@Param('id') id: string, @Body() payload: GrandPrixUpdateDTO): Promise<GrandPrix> {
     return this.grandPrixService.updateGrandPrix(id, payload);
   }
 

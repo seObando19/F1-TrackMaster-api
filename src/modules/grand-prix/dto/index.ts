@@ -1,1 +1,1 @@
-export { GrandPrixDTO } from './grand-prix.dto';
+export { GrandPrixCreateDTO, GrandPrixUpdateDTO } from './grand-prix.dto';

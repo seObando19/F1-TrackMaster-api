@@ -1,11 +1,11 @@
-import { IsMongoId, IsObject, IsString } from "class-validator";
+import { IsMongoId, IsObject, IsString, IsOptional } from "class-validator";
 import { Status, Circuit } from "../interfaces/grand-prix/grand-prix.interface";
 import { Team } from "../../../schemas/team.schema";
 import { Pilot } from "../../../schemas/pilot.schema";
 import { ApiProperty } from "@nestjs/swagger";
 
 
-export class GrandPrixDTO {
+export class GrandPrixCreateDTO {
 
   @IsString()
   @ApiProperty()
@@ -33,5 +33,41 @@ export class GrandPrixDTO {
 
   @IsString()
   @ApiProperty()
+  status: Status;
+}
+
+export class GrandPrixUpdateDTO {
+
+  @IsString()
+  @ApiProperty()
+  @IsOptional()
+  name: string;
+
+  /* @IsString()
+  @ApiProperty()
+  firstEdtion: string; */
+
+  /* @IsString()
+  @ApiProperty()
+  headquarters: string; */
+
+  @IsMongoId()
+  @ApiProperty()
+  @IsOptional()
+  greaterWinnerConstructions: Team;
+
+  @IsMongoId()
+  @ApiProperty()
+  @IsOptional()
+  greaterWinnerPilots: Pilot;
+
+  @IsObject()
+  @ApiProperty()
+  @IsOptional()
+  circuit: Circuit;
+
+  @IsString()
+  @ApiProperty()
+  @IsOptional()
   status: Status;
 }
