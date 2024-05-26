@@ -2,7 +2,7 @@ import { IsArray, IsDateString, IsObject, IsOptional, IsString, isDateString } f
 import { StatisticTeam, Status } from "../interfaces/team/team.interface";
 import { ApiProperty } from "@nestjs/swagger";
 
-export class TeamDTO {
+export class TeamCreateDTO {
 
   @IsString()
   @ApiProperty()
@@ -30,5 +30,40 @@ export class TeamDTO {
   statisticTeam: StatisticTeam;
 
   @ApiProperty()
+  status: Status;
+}
+
+export class TeamUpdateDTO {
+
+  @IsString()
+  @ApiProperty()
+  @IsOptional()
+  name: string;
+
+  @IsString()
+  @ApiProperty()
+  @IsOptional()
+  headquarters: string;
+
+  /* @IsString()
+  @ApiProperty()
+  startYear: string; */
+
+  /* @IsString()
+  @ApiProperty()
+  debut: string; */
+
+  @IsArray()
+  @IsOptional()
+  @ApiProperty({required:false})
+  pilots?: string[];
+
+  @IsObject()
+  @ApiProperty()
+  @IsOptional()
+  statisticTeam: StatisticTeam;
+
+  @ApiProperty()
+  @IsOptional()
   status: Status;
 }

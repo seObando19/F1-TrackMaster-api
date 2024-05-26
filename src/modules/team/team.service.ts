@@ -30,7 +30,7 @@ export class TeamService {
     return teams;
   }
 
-  async updateTeam(id: string, payload: Team): Promise<Team> {
+  async updateTeam(id: string, payload: Partial<Team>): Promise<Team> {
     if(!id || !payload) throw new NotFoundException('Resource no found');
     await this.teamModel.findByIdAndUpdate(id, payload);
     const teamRegister = this.getTeamById(id);

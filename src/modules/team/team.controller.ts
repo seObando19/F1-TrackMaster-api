@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Get, NotFoundException, Param, Patch, Post, Query, UseGuards } from '@nestjs/common';
 import { TeamService } from './team.service';
 import { Team } from 'src/schemas/team.schema';
-import { TeamDTO } from './dto';
+import { TeamCreateDTO, TeamUpdateDTO } from './dto';
 import { configuration } from '../../../config/configuration';
 import { ApiBearerAuth, ApiBody, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { Status } from './interfaces/team/team.interface';
@@ -16,7 +16,6 @@ export class TeamController {
   constructor( private teamService: TeamService ) {}
 
   @Get()
-  @HasRoles(Roles.superAdmin, Roles.admin, Roles.userRegister)
   @UseGuards(RolesGuard)
   @ApiQuery({name: 'name', required: false})
   @ApiQuery({name: 'status', enum:Status, required: false})
@@ -33,7 +32,6 @@ export class TeamController {
   }
 
   @Get(':id')
-  @HasRoles(Roles.superAdmin, Roles.admin, Roles.userRegister)
   @UseGuards(RolesGuard)
   getTeamById(@Param('id') id: string): Promise<Team> {
     if(!id) throw new NotFoundException('Resource no found');
@@ -44,8 +42,8 @@ export class TeamController {
   @ApiBearerAuth()
   @HasRoles(Roles.superAdmin, Roles.admin)
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @ApiBody({type: [TeamDTO]})
-  createTeam(@Body() payload: TeamDTO[]): Promise<Team[]> {
+  @ApiBody({type: [TeamCreateDTO]})
+  createTeam(@Body() payload: TeamCreateDTO[]): Promise<Team[]> {
     return this.teamService.createTeam(payload);
   }
 
@@ -53,7 +51,7 @@ export class TeamController {
   @ApiBearerAuth()
   @HasRoles(Roles.superAdmin, Roles.admin)
   @UseGuards(JwtAuthGuard, RolesGuard)
-  updateTeam(@Param('id') id: string, @Body() payload: TeamDTO): Promise<Team>  {
+  updateTeam(@Param('id') id: string, @Body() payload: TeamUpdateDTO): Promise<Team>  {
     return this.teamService.updateTeam(id, payload);
   }
 

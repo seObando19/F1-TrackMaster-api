@@ -1,1 +1,1 @@
-export { TeamDTO } from './team.dto';
+export { TeamCreateDTO, TeamUpdateDTO } from './team.dto';

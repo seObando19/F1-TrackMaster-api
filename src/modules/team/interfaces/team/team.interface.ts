@@ -9,10 +9,10 @@ export interface Team {
 }
 
 export enum Status {
-  'active'= 'active',
-  'inactive'= 'inactive',
-  'deleted'= 'deleted',
-  'rebranding'= 'rebranding'
+  active     = 'active',
+  inactive   = 'inactive',
+  deleted    = 'deleted',
+  rebranding = 'rebranding'
 }
 
 export type StatisticTeam = {
