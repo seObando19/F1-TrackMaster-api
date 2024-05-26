@@ -1,9 +1,9 @@
-import { IsString, IsMongoId, IsArray } from "class-validator";
+import { IsString, IsMongoId, IsArray, IsOptional } from "class-validator";
 import { Team } from "../../../schemas/team.schema";
 import { Status } from "../interfaces/car/car.interface";
 import { ApiProperty } from "@nestjs/swagger";
 
-export class CarDTO {
+export class CarCreateDTO {
 
   @IsString()
   @ApiProperty()
@@ -24,5 +24,34 @@ export class CarDTO {
 
   @IsString()
   @ApiProperty()
+  status: Status
+}
+
+export class CarUpdateDTO {
+
+  @IsString()
+  @ApiProperty()
+  @IsOptional()
+  name: string;
+
+  @IsMongoId()
+  @ApiProperty()
+  @IsOptional()
+  team_id: Team;
+
+  @IsString()
+  @ApiProperty()
+  @IsOptional()
+  season: string;
+
+  @IsString()
+  @IsArray()
+  @ApiProperty()
+  @IsOptional()
+  pilots_use: string[];
+
+  @IsString()
+  @ApiProperty()
+  @IsOptional()
   status: Status
 }
