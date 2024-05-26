@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Get, NotFoundException, Param, Patch, Post, Query, UseGuards } from '@nestjs/common';
 import { CarService } from "./car.service";
 import { Car } from "../../schemas/car.schema";
-import { CarCreateDTO, CarUpdateDTO } from './dto';
+import { CarDTO } from './dto/car.dto';
 import { configuration } from '../../../config/configuration';
 import { ApiBearerAuth, ApiBody, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { Status } from './interfaces/car/car.interface';
@@ -16,6 +16,7 @@ export class CarController {
   constructor(private carService: CarService) {}
 
   @Get()
+  @HasRoles(Roles.superAdmin, Roles.admin, Roles.userRegister)
   @UseGuards(RolesGuard)
   @ApiQuery({name: 'name', required: false})
   @ApiQuery({name: 'status', enum: Status, required: false})
@@ -31,6 +32,7 @@ export class CarController {
   }
 
   @Get(':id')
+  @HasRoles(Roles.superAdmin, Roles.admin, Roles.userRegister)
   @UseGuards(RolesGuard)
   getCarById(@Param(':id') id: string):Promise<Car> {
     if(!id) throw new NotFoundException('Error in id..');
@@ -41,8 +43,8 @@ export class CarController {
   @ApiBearerAuth()
   @HasRoles(Roles.superAdmin, Roles.admin)
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @ApiBody({type:CarCreateDTO})
-  createCar(@Body() payload: CarCreateDTO[]):Promise<Car[]>{
+  @ApiBody({type:CarDTO})
+  createCar(@Body() payload: CarDTO[]):Promise<Car[]>{
     return this.carService.createCar(payload);
   }
 
@@ -50,7 +52,7 @@ export class CarController {
   @ApiBearerAuth()
   @HasRoles(Roles.superAdmin, Roles.admin)
   @UseGuards(JwtAuthGuard, RolesGuard)
-  updateCar(@Param() id: string, @Body() payload: CarUpdateDTO):Promise<Car>{
+  updateCar(@Param() id: string, @Body() payload: CarDTO):Promise<Car>{
     return this.carService.updateCar(id, payload);
   }
 

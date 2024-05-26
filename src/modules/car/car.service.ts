@@ -31,7 +31,7 @@ export class CarService {
     return cars;
   }
 
-  async updateCar(id: string, payload: Partial<Car>): Promise<Car>{
+  async updateCar(id: string, payload: Car): Promise<Car>{
     if(!id || !payload) throw new NotFoundException('Resource no found');
     const carUpdated = await this.carModel.findByIdAndUpdate(id, payload);
     return carUpdated;
